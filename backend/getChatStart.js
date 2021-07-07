@@ -30,6 +30,9 @@ const getStartOfChat = async () => {
     data._next
   );
 
+  const fs = require("fs");
+  fs.writeFileSync("chat.json", JSON.stringify(data));
+
   return data;
 };
 
