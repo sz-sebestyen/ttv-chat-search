@@ -1,25 +1,13 @@
-const express = require("express");
-const app = express();
-const mongoose = require("mongoose");
+const app = require("./app");
 require("dotenv").config();
+const mongoose = require("mongoose");
+require("../shared-nodejs/database/connect")(mongoose);
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+const Test = require("./models/Test");
 
-mongoose.set("useCreateIndex", true);
+new Test({ comment: "can't touch this" }).save();
 
-const connectionString = process.env.DB_CONNECTION;
-
-mongoose
-  .connect(connectionString, {
-    useUnifiedTopology: true,
-    useNewUrlParser: true,
-  })
-  .then(() => console.log("MongoDB Connected..."))
-  .catch((err) => console.log(err));
-
-const VodInfo = require("./models/VodInfo");
-
+// const VodInfo = require("./models/VodInfo");
 // new VodInfo({
 //   id: "1078574122",
 //   stream_id: "42713213517",
