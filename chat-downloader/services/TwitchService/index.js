@@ -1,4 +1,4 @@
-const TwitchApi = require("./TwitchApi");
+const twitchApi = require("../../TwitchApi");
 const VodInfo = require("../../models/VodInfo");
 
 class TwitchService {
@@ -9,7 +9,7 @@ class TwitchService {
       return vodInfoInDatabase;
     }
 
-    const freshVodInfo = await TwitchApi.getVodInfo(id);
+    const freshVodInfo = await twitchApi.getVodInfo(id);
 
     if (freshVodInfo) {
       return new VodInfo(freshVodInfo).save();
