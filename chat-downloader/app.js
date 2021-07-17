@@ -11,4 +11,13 @@ app.use(express.urlencoded({ extended: true }));
 // routes
 app.post("/vod", vodController);
 
+app.use((err, req, res, next) => {
+  if (err) {
+    console.log("server error: ", err);
+    res.status(500).json({ message: "Internal server error" });
+  } else {
+    next();
+  }
+});
+
 module.exports = app;
