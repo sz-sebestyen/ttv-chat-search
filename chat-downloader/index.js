@@ -1,6 +1,6 @@
-const app = require("./app");
 require("dotenv").config();
 require("./database/connect");
+const app = require("./app");
 
 const Test = require("./models/Test");
 

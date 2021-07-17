@@ -5,6 +5,10 @@ class TwitchApi {
     this.client_id = process.env.TWITCH_CLIENT_ID;
     this.client_secret = process.env.TWITCH_CLIENT_SECRET;
     this.access_token = process.env.TWITCH_ACCESS_TOKEN;
+
+    // console.log("client_id: ", this.client_id);
+    // console.log("client_secret: ", this.client_secret);
+    // console.log("access_token: ", this.access_token);
   }
 
   async updateAppAccessToken() {
@@ -23,6 +27,11 @@ class TwitchApi {
     const { access_token } = await res.json();
 
     this.access_token = access_token;
+
+    // console.log("access_token updated: ");
+    // console.log("client_id: ", this.client_id);
+    // console.log("client_secret: ", this.client_secret);
+    // console.log("access_token: ", this.access_token);
   }
 
   async makeAuthorizedRequest(url, options) {
@@ -50,13 +59,21 @@ class TwitchApi {
       },
     };
 
-    const res = await makeAuthorizedRequest(url, options);
+    const res = await this.makeAuthorizedRequest(url, options);
 
-    const {
-      data: [vodInfo],
-    } = await res.json();
+    const answer = await res.json();
 
-    return vodInfo;
+    if (res.status === 200) {
+      console.log("ttv answer: ", answer);
+
+      const {
+        data: [vodInfo],
+      } = answer;
+
+      return vodInfo;
+    } else {
+      return null;
+    }
   }
 
   async getVodChatPage(url) {
@@ -69,7 +86,7 @@ class TwitchApi {
       },
     };
 
-    const res = await makeAuthorizedRequest(url, options);
+    const res = await this.makeAuthorizedRequest(url, options);
 
     const page = await res.json();
 

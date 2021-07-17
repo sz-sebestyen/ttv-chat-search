@@ -62,9 +62,14 @@ const VodInfoSchema = Schema({
   //     offset: { type: Number },
   //   },
   // ],
+  chatStatus: {
+    type: String,
+    enum: ["waiting", "unavailable", "downloading", "downloaded"],
+    default: "waiting",
+  },
 });
 
-VodInfoSchema.index({ id: 1 });
+// VodInfoSchema.index({ id: 1 });
 
 const VodInfo = mongoose.model("VodInfo", VodInfoSchema);
 
