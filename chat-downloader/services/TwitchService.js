@@ -1,5 +1,6 @@
 const twitchApi = require("../TwitchApi");
 const VodInfo = require("../models/VodInfo");
+const ChatMessage = require("../models/ChatMessage");
 
 const SECONDS_IN_A_MINUTE = 60;
 const SECONDS_IN_AN_HOUR = 3600;
@@ -35,18 +36,54 @@ class TwitchService {
     }
   }
 
-  static async getChat(id) {
-    const vodInfo = await VodInfo.findOne({ id });
+  static async downloadChat(vodId) {
+    const vodInfo = await VodInfo.findOne({ id: vodId });
 
     const vodLengthInSeconds = TwitchService.getSecondsFromDuration(
       vodInfo.duration
     );
 
-    // first just console.log the first page of the vod's chat
+    TwitchService.downloadChatPiece(vodId, 0, 15);
+  }
 
-    const firstPage = await twitchApi.getVodChatAtSeconds(id, 0);
+  static async downloadChatPiece(vodId, startSeconds, endSeconds) {
+    if (endSeconds > 24 * 60 * 60) {
+      throw RangeError("chat piece exceeds 24 hours");
+    }
 
-    console.log("firstPage: ", firstPage);
+    let currentPage = await twitchApi.getVodChatAtSeconds(vodId, startSeconds);
+
+    const shouldRemoveLastComment = (comments) => {
+      const lastComment = comments[comments.length - 1];
+      return lastComment.content_offset_seconds >= endSeconds;
+    };
+
+    const isNotLastPage = (page) => !shouldRemoveLastComment(page.comments);
+
+    const saveComments = (comments) => {
+      comments.forEach((comment) => {
+        delete comment._id;
+        delete comment.commenter._id;
+      });
+
+      ChatMessage.insertMany(comments, (error, docs) => {
+        if (error) throw error;
+      });
+    };
+
+    while (isNotLastPage(currentPage)) {
+      const { _next, comments } = currentPage;
+
+      saveComments(comments);
+
+      currentPage = await twitchApi.getVodChatPageAtCursor(vodId, _next);
+    }
+
+    while (shouldRemoveLastComment(currentPage.comments)) {
+      currentPage.comments.pop();
+    }
+
+    saveComments(currentPage.comments);
   }
 }
 
