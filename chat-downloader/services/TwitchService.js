@@ -4,8 +4,11 @@ const ChatMessage = require("../models/ChatMessage");
 
 const SECONDS_IN_A_MINUTE = 60;
 const SECONDS_IN_AN_HOUR = 3600;
+const SECONDS_IN_A_DAY = 24 * 3600;
 
 const DURATION_REGEX = /^(\d+)h(\d+)m(\d+)s$/;
+
+const NUMBER_OF_CHAT_DOWNLOAD_PROCESSSES = 4;
 
 class TwitchService {
   static getSecondsFromDuration(duration) {
@@ -43,16 +46,42 @@ class TwitchService {
       vodInfo.duration
     );
 
-    TwitchService.downloadChatPiece(vodId, 0, 10);
-    TwitchService.downloadChatPiece(vodId, 10, 15);
+    const getChatSections = (numberOfSections, end) => {
+      const partLength = Math.floor(end / numberOfSections);
+
+      const parts = Array(numberOfSections)
+        .fill()
+        .map((_, index) => ({
+          start: index * partLength,
+          end: (index + 1) * partLength,
+        }));
+
+      parts.push({
+        start: parts[parts.length - 1].end,
+        end,
+      });
+      return parts;
+    };
+
+    const chatSections = getChatSections(
+      NUMBER_OF_CHAT_DOWNLOAD_PROCESSSES,
+      15 // vodLengthInSeconds when I set up a local DB
+    );
+
+    const downloadProcesses = chatSections.map((chatSection) =>
+      TwitchService.downloadChatPiece(vodId, chatSection.start, chatSection.end)
+    );
+
+    await Promise.all(downloadProcesses);
+
+    // TODO: update VOD request in DB
+    console.log("chat download finished");
   }
 
   static async downloadChatPiece(vodId, startSeconds, endSeconds) {
-    if (endSeconds > 24 * 60 * 60) {
+    if (endSeconds > SECONDS_IN_A_DAY) {
       throw RangeError("chat piece exceeds 24 hours");
     }
-
-    let currentPage = await twitchApi.getVodChatAtSeconds(vodId, startSeconds);
 
     const shouldRemoveLastComment = (comments) => {
       const lastComment = comments[comments.length - 1];
@@ -76,6 +105,8 @@ class TwitchService {
       const [firstComment] = comments;
       return firstComment.content_offset_seconds < startSeconds;
     };
+
+    let currentPage = await twitchApi.getVodChatAtSeconds(vodId, startSeconds);
 
     while (shouldRemoveFirstComment(currentPage.comments)) {
       currentPage.comments.shift();
