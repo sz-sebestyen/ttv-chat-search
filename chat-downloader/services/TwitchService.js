@@ -43,7 +43,8 @@ class TwitchService {
       vodInfo.duration
     );
 
-    TwitchService.downloadChatPiece(vodId, 0, 15);
+    TwitchService.downloadChatPiece(vodId, 0, 10);
+    TwitchService.downloadChatPiece(vodId, 10, 15);
   }
 
   static async downloadChatPiece(vodId, startSeconds, endSeconds) {
@@ -70,6 +71,15 @@ class TwitchService {
         if (error) throw error;
       });
     };
+
+    const shouldRemoveFirstComment = (comments) => {
+      const [firstComment] = comments;
+      return firstComment.content_offset_seconds < startSeconds;
+    };
+
+    while (shouldRemoveFirstComment(currentPage.comments)) {
+      currentPage.comments.shift();
+    }
 
     while (isNotLastPage(currentPage)) {
       const { _next, comments } = currentPage;
