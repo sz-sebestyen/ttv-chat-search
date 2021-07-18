@@ -64,7 +64,7 @@ const VodInfoSchema = new Schema({
   // ],
   chatStatus: {
     type: String,
-    enum: ["waiting", "unavailable", "downloading", "downloaded"],
+    enum: ["waiting", "error", "downloading", "downloaded"],
     default: "waiting",
   },
 });

@@ -1,4 +1,4 @@
 const downloadChat = require("./downloadChat");
-const getVodStatus = require("./getVodStatus");
+const getVodInfo = require("./getVodInfo");
 
-module.exports = { downloadChat, getVodStatus };
+module.exports = { downloadChat, getVodInfo };

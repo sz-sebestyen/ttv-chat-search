@@ -4,12 +4,12 @@ const TwitchService = require("../services/TwitchService");
 const vod = async (req, res, next) => {
   const { id } = req.query;
 
-  const vodStatus = await TwitchService.getVodStatus(id);
+  const vodInfo = await TwitchService.getVodInfo(id);
 
-  if (vodStatus) {
+  if (vodInfo) {
     res.json({ message: "vod found" });
 
-    TwitchService.downloadChat(id);
+    TwitchService.downloadChat(vodInfo);
   } else {
     res.status(404).json({ message: "vod not found" });
   }

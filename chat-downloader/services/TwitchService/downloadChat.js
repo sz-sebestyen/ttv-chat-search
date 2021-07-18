@@ -19,9 +19,7 @@ const getChatSections = (end, numberOfSections) => {
   return sections;
 };
 
-module.exports = async (vodId) => {
-  const vodInfo = await VodInfo.findOne({ id: vodId });
-
+module.exports = async (vodInfo) => {
   const vodLengthInSeconds = getSecondsFromDuration(vodInfo.duration);
 
   const chatSections = getChatSections(
@@ -29,12 +27,24 @@ module.exports = async (vodId) => {
     NUMBER_OF_CHAT_DOWNLOAD_PROCESSSES
   );
 
-  const downloadProcesses = chatSections.map(({ start, end }) =>
-    downloadChatPiece(vodId, start, end)
-  );
+  try {
+    const downloadProcesses = chatSections.map(({ start, end }) =>
+      downloadChatPiece(vodInfo.id, start, end)
+    );
 
-  await Promise.all(downloadProcesses);
+    vodInfo.chatStatus = "downloading";
+    vodInfo.save();
 
-  // TODO: update VOD request in DB
-  console.log("chat download finished");
+    await Promise.all(downloadProcesses);
+
+    vodInfo.chatStatus = "downloaded";
+    vodInfo.save();
+
+    console.log("chat download finished");
+  } catch (error) {
+    console.log("errer when downloading chat: ", error);
+
+    vodInfo.chatStatus = "error";
+    vodInfo.save();
+  }
 };
