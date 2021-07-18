@@ -12,7 +12,7 @@ const getChatSections = (end, numberOfSections) => {
     end: (index + 1) * sectionLength,
   });
 
-  const sections = Array.from({ length: numberOfSections }).map(createSection);
+  const sections = Array.from({ length: numberOfSections }, createSection);
 
   sections[sections.length - 1].end = end;
 
