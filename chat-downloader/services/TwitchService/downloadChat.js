@@ -4,22 +4,19 @@ const downloadChatPiece = require("./downloadChatPiece");
 
 const NUMBER_OF_CHAT_DOWNLOAD_PROCESSSES = 4;
 
-const getChatSections = (numberOfSections, end) => {
-  const partLength = Math.floor(end / numberOfSections);
+const getChatSections = (end, numberOfSections) => {
+  const sectionLength = Math.floor(end / numberOfSections);
 
-  const parts = Array(numberOfSections)
-    .fill()
-    .map((_, index) => ({
-      start: index * partLength,
-      end: (index + 1) * partLength,
-    }));
-
-  parts.push({
-    start: parts[parts.length - 1].end,
-    end,
+  const createSection = (_, index) => ({
+    start: index * sectionLength,
+    end: (index + 1) * sectionLength,
   });
 
-  return parts;
+  const sections = Array.from({ length: numberOfSections }).map(createSection);
+
+  sections[sections.length - 1].end = end;
+
+  return sections;
 };
 
 module.exports = async (vodId) => {
@@ -28,12 +25,12 @@ module.exports = async (vodId) => {
   const vodLengthInSeconds = getSecondsFromDuration(vodInfo.duration);
 
   const chatSections = getChatSections(
-    NUMBER_OF_CHAT_DOWNLOAD_PROCESSSES,
-    15 // vodLengthInSeconds when I set up a local DB
+    15, // vodLengthInSeconds when I set up a local DB
+    NUMBER_OF_CHAT_DOWNLOAD_PROCESSSES
   );
 
-  const downloadProcesses = chatSections.map((chatSection) =>
-    downloadChatPiece(vodId, chatSection.start, chatSection.end)
+  const downloadProcesses = chatSections.map(({ start, end }) =>
+    downloadChatPiece(vodId, start, end)
   );
 
   await Promise.all(downloadProcesses);
