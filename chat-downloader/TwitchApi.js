@@ -57,13 +57,9 @@ class TwitchApi {
 
     const res = await this.makeAuthorizedRequest(url, options);
 
-    console.log(res);
-
     const answer = await res.json();
 
     if (res.status === 200) {
-      console.log("ttv answer: ", answer);
-
       const {
         data: [vodInfo],
       } = answer;
