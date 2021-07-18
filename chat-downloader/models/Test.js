@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
-
 const { Schema } = mongoose;
 
-const TestSchema = Schema({
+const TestSchema = new Schema({
   comment: {
     type: String,
   },
