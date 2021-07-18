@@ -7,9 +7,9 @@ const vod = async (req, res, next) => {
   const vodStatus = await TwitchService.getVodStatus(id);
 
   if (vodStatus) {
-    res.json({ message: "OK" });
+    res.json({ message: "vod found" });
 
-    // TODO: start downloading chat
+    TwitchService.getChat(id);
   } else {
     res.status(404).json({ message: "vod not found" });
   }
