@@ -1,5 +1,5 @@
-const twitchApi = require("../../TwitchApi");
-const VodInfo = require("../../models/VodInfo");
+const twitchApi = require("../TwitchApi");
+const VodInfo = require("../models/VodInfo");
 
 const SECONDS_IN_A_MINUTE = 60;
 const SECONDS_IN_AN_HOUR = 3600;
@@ -37,7 +37,16 @@ class TwitchService {
 
   static async getChat(id) {
     const vodInfo = await VodInfo.findOne({ id });
-    const { duration } = vodInfo;
+
+    const vodLengthInSeconds = TwitchService.getSecondsFromDuration(
+      vodInfo.duration
+    );
+
+    // first just console.log the first page of the vod's chat
+
+    const firstPage = await twitchApi.getVodChatAtSeconds(id, 0);
+
+    console.log("firstPage: ", firstPage);
   }
 }
 
