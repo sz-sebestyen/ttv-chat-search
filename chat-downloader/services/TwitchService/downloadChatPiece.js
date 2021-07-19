@@ -20,17 +20,17 @@ const saveComments = async (comments) => {
 };
 
 const getNotEarlyComments = (comments, startSeconds) => {
-  const isNotEarly = ({ content_offset_seconds }) =>
+  const isNotEarlyComment = ({ content_offset_seconds }) =>
     content_offset_seconds >= startSeconds;
 
-  return comments.filter(isNotEarly);
+  return comments.filter(isNotEarlyComment);
 };
 
 const getNotLateComments = (comments, endSeconds) => {
-  const isNotLate = ({ content_offset_seconds }) =>
+  const isNotLateComment = ({ content_offset_seconds }) =>
     content_offset_seconds < endSeconds;
 
-  return comments.filter(isNotLate);
+  return comments.filter(isNotLateComment);
 };
 
 module.exports = async (vodId, startSeconds, endSeconds) => {
