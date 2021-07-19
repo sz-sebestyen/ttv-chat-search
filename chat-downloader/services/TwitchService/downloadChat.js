@@ -1,4 +1,4 @@
-const VodInfo = require("../../models/VodInfo");
+const ChatMessage = require("../../models/ChatMessage");
 const getSecondsFromDuration = require("./getSecondsFromDuration");
 const downloadChatPiece = require("./downloadChatPiece");
 
@@ -20,6 +20,14 @@ const getChatSections = (end, numberOfSections) => {
 };
 
 module.exports = async (vodInfo) => {
+  const hasDownloadStartedElsewhere = await ChatMessage.findOne({
+    content_id: vodInfo.id,
+  });
+
+  if (hasDownloadStartedElsewhere) {
+    return;
+  }
+
   const vodLengthInSeconds = getSecondsFromDuration(vodInfo.duration);
 
   const chatSections = getChatSections(

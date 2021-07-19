@@ -4,7 +4,7 @@ const VodInfo = require("../../models/VodInfo");
 module.exports = async (id) => {
   const vodInfoInDatabase = await VodInfo.findOne({ id });
 
-  if (vodInfoInDatabase?.chatStatus === "downloaded") {
+  if (vodInfoInDatabase?.chatStatus !== "error") {
     return vodInfoInDatabase;
   }
 
