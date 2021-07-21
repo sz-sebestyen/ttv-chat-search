@@ -2,7 +2,7 @@ const asyncHandler = require("express-async-handler");
 const TwitchService = require("../services/TwitchService");
 
 const vod = async (req, res, next) => {
-  const { id } = req.query;
+  const { id } = req.params;
 
   const vodInfo = await TwitchService.getVodInfo(id);
 

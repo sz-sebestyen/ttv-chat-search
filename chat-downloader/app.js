@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // routes
-app.post("/vod", vodController);
+app.post("/vod/:id", vodController);
 
 app.use((err, req, res, next) => {
   if (err) {
