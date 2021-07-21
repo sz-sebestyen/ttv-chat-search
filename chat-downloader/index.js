@@ -12,6 +12,13 @@ twitchApi.setCredentials(
   TWITCH_ACCESS_TOKEN
 );
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`app is listening at http://localhost:${PORT}`);
+});
+
+process.on("SIGTERM", () => {
+  debug("SIGTERM signal received: closing HTTP server");
+  server.close(() => {
+    debug("HTTP server closed");
+  });
 });
