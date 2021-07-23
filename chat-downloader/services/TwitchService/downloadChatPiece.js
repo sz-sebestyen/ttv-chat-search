@@ -12,6 +12,8 @@ const isNotLastPage = (page, endSeconds) => {
 
 const remove_ids = (comments) => {
   comments.forEach((comment) => {
+    comment.original_id = comment._id;
+    comment.commenter.original_id = comment.commenter._id;
     delete comment._id;
     delete comment.commenter._id;
   });

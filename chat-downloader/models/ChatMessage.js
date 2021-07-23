@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const CommenterSchema = new Schema({
+  original_id: {
+    type: String,
+    required: true,
+  },
   display_name: {
     type: String,
     required: true,
@@ -19,6 +23,10 @@ const MessageSchema = new Schema({
 });
 
 const ChatMessageSchema = new Schema({
+  original_id: {
+    type: String,
+    required: true,
+  },
   created_at: {
     type: String,
     required: true,
