@@ -10,7 +10,7 @@ const isNotLastPage = (page, endSeconds) => {
   return lastComment.content_offset_seconds < endSeconds && page._next;
 };
 
-const remove_ids = (comments) => {
+const rename_ids = (comments) => {
   comments.forEach((comment) => {
     comment.original_id = comment._id;
     comment.commenter.original_id = comment.commenter._id;
@@ -49,7 +49,7 @@ module.exports = async (vodId, startSeconds, endSeconds) => {
   chatPage.comments = getNotEarlyComments(chatPage.comments, startSeconds);
 
   while (isNotLastPage(chatPage, endSeconds)) {
-    remove_ids(chatPage.comments);
+    rename_ids(chatPage.comments);
     saveComments(chatPage.comments);
 
     chatPage = await twitchApi.getVodChatPageAtCursor(vodId, chatPage._next);
@@ -57,6 +57,6 @@ module.exports = async (vodId, startSeconds, endSeconds) => {
 
   chatPage.comments = getNotLateComments(chatPage.comments, endSeconds);
 
-  remove_ids(chatPage.comments);
+  rename_ids(chatPage.comments);
   await saveComments(chatPage.comments);
 };
