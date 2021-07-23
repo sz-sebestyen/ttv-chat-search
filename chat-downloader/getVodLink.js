@@ -1,6 +1,9 @@
+const minutesInAnHour = 60;
+const hoursInADay = 24;
+
 const secondsInAMinute = 60;
-const secondsInAnHour = secondsInAMinute * 60;
-const secondsInADay = secondsInAnHour * 24;
+const secondsInAnHour = secondsInAMinute * minutesInAnHour;
+const secondsInADay = secondsInAnHour * hoursInADay;
 
 module.exports = (vod_id, content_offset_seconds) => {
   let secondsLeft = Math.floor(content_offset_seconds);

@@ -1,6 +1,9 @@
 const fetch = require("node-fetch");
 const { AppCredentials } = require("./AppCredentials");
 
+const UNAUTHORIZED = 401;
+const SUCCESS = 200;
+
 class TwitchApi {
   setCredentials(credentials) {
     this.credentials = new AppCredentials(credentials);
@@ -11,7 +14,7 @@ class TwitchApi {
 
     const res = await fetchPromise;
 
-    if (res.status === 401) {
+    if (res.status === UNAUTHORIZED) {
       await this.credentials.refreshAccessToken();
 
       options.headers.authorization = `Bearer ${this.credentials.getAccessToken()}`;
@@ -37,7 +40,7 @@ class TwitchApi {
 
     const answer = await res.json();
 
-    if (res.status === 200) {
+    if (res.status === SUCCESS) {
       const {
         data: [vodInfo],
       } = answer;

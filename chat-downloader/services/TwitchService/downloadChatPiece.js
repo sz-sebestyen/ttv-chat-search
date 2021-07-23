@@ -1,7 +1,9 @@
 const twitchApi = require("../../TwitchApi");
 const ChatMessage = require("../../models/ChatMessage");
 
-const SECONDS_IN_A_DAY = 24 * 3600;
+const HOURS_IN_A_DAY = 24;
+const SECONDS_IN_AN_HOUR = 3600;
+const SECONDS_IN_A_DAY = HOURS_IN_A_DAY * SECONDS_IN_AN_HOUR;
 
 const isNotLastPage = (page, endSeconds) => {
   const lastComment = page.comments[page.comments.length - 1];

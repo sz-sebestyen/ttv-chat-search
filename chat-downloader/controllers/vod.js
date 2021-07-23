@@ -1,6 +1,8 @@
 const asyncHandler = require("express-async-handler");
 const TwitchService = require("../services/TwitchService");
 
+const NOT_FOUND = 404;
+
 const vod = async (req, res, next) => {
   const { id } = req.params;
 
@@ -11,7 +13,7 @@ const vod = async (req, res, next) => {
 
     TwitchService.downloadChat(vodInfo);
   } else {
-    res.status(404).json({ message: "vod not found" });
+    res.status(NOT_FOUND).json({ message: "vod not found" });
   }
 };
 

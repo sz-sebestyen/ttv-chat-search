@@ -1,3 +1,5 @@
+const SUCCESS = 200;
+
 class AppCredentials {
   constructor({ clientId, clientSecret, accessToken }) {
     this.getClientId = () => clientId;
@@ -32,7 +34,7 @@ class AppCredentials {
         },
       });
 
-      return res.status === 200;
+      return res.status === SUCCESS;
     };
   }
 }

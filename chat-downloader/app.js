@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 
+const SERVER_ERROR = 500;
+
 // controllers
 const vodController = require("./controllers/vod");
 
@@ -14,7 +16,7 @@ app.post("/vod/:id", vodController);
 app.use((err, req, res, next) => {
   if (err) {
     console.log("server error: ", err);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(SERVER_ERROR).json({ message: "Internal server error" });
   } else {
     next();
   }
