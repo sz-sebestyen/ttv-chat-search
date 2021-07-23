@@ -1,6 +1,9 @@
 const fetch = require("node-fetch");
 const asyncHandler = require("express-async-handler");
 
+const SUCCESS = 200;
+const NOT_FOUND = 404;
+
 const downloadChat = async (req, res, next) => {
   const { id } = req.params;
 
@@ -10,10 +13,10 @@ const downloadChat = async (req, res, next) => {
     method: "POST",
   });
 
-  if (chatDownloaderResponse.status === 200) {
+  if (chatDownloaderResponse.status === SUCCESS) {
     res.json({ message: "Vod request registered" });
   } else {
-    res.stauts(404).json({ message: "Vod not found" });
+    res.stauts(NOT_FOUND).json({ message: "Vod not found" });
   }
 };
 
