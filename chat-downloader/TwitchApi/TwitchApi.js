@@ -1,42 +1,20 @@
 const fetch = require("node-fetch");
+const { AppCredentials } = require("./AppCredentials");
 
 class TwitchApi {
-  setCredentials(client_id, client_secret, access_token) {
-    const { TWITCH_CLIENT_ID, TWITCH_CLIENT_SECRET, TWITCH_ACCESS_TOKEN } =
-      process.env;
-
-    this.client_id = client_id || TWITCH_CLIENT_ID;
-    this.client_secret = client_secret || TWITCH_CLIENT_SECRET;
-    this.access_token = access_token || TWITCH_ACCESS_TOKEN;
-  }
-
-  async updateAppAccessToken() {
-    const query = [
-      `client_id=${this.client_id}`,
-      `client_secret=${this.client_secret}`,
-      "grant_type=client_credentials",
-    ].join("&");
-
-    const url = `https://id.twitch.tv/oauth2/token?${query}`;
-
-    const res = await fetch(url, {
-      method: "POST",
-    });
-
-    const { access_token } = await res.json();
-
-    this.access_token = access_token;
+  setCredentials(credentials) {
+    this.credentials = new AppCredentials(credentials);
   }
 
   async makeAuthorizedRequest(url, options) {
     let fetchPromise = fetch(url, options);
 
-    let res = await fetchPromise;
+    const res = await fetchPromise;
 
     if (res.status === 401) {
-      await this.updateAppAccessToken();
+      await this.credentials.refreshAccessToken();
 
-      options.headers.authorization = `Bearer ${this.access_token}`;
+      options.headers.authorization = `Bearer ${this.credentials.getAccessToken()}`;
 
       fetchPromise = fetch(url, options);
     }
@@ -50,8 +28,8 @@ class TwitchApi {
     const options = {
       method: "GET",
       headers: {
-        authorization: `Bearer ${this.access_token}`,
-        "client-id": this.client_id,
+        authorization: `Bearer ${this.credentials.getAccessToken()}`,
+        "client-id": this.credentials.getClientId(),
       },
     };
 
@@ -74,8 +52,8 @@ class TwitchApi {
     const options = {
       method: "GET",
       headers: {
-        authorization: `Bearer ${this.access_token}`,
-        "client-id": this.client_id,
+        authorization: `Bearer ${this.credentials.getAccessToken()}`,
+        "client-id": this.credentials.getClientId(),
         Accept: "application/vnd.twitchtv.v5+json; charset=UTF-8",
       },
     };
@@ -93,19 +71,6 @@ class TwitchApi {
   async getVodChatPageAtCursor(vod_id, cursor) {
     const url = `https://api.twitch.tv/v5/videos/${vod_id}/comments?cursor=${cursor}`;
     return this.getVodChatPage(url);
-  }
-
-  async getValidation(access_token) {
-    const url = `https://id.twitch.tv/oauth2/validate`;
-
-    const res = await fetch(url, {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${access_token}`,
-      },
-    });
-
-    return res.json();
   }
 }
 
