@@ -19,7 +19,7 @@ const getChatSections = (end, numberOfSections) => {
   return sections;
 };
 
-module.exports = async (vodInfo) => {
+const downloadChat = async (vodInfo) => {
   const hasDownloadStartedElsewhere = await ChatMessage.findOne({
     content_id: vodInfo.id,
   });
@@ -56,3 +56,5 @@ module.exports = async (vodInfo) => {
     vodInfo.save();
   }
 };
+
+module.exports = downloadChat;

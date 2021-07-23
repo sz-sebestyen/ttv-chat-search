@@ -5,7 +5,7 @@ const secondsInAMinute = 60;
 const secondsInAnHour = secondsInAMinute * minutesInAnHour;
 const secondsInADay = secondsInAnHour * hoursInADay;
 
-module.exports = (vod_id, content_offset_seconds) => {
+const getVodLink = (vod_id, content_offset_seconds) => {
   let secondsLeft = Math.floor(content_offset_seconds);
 
   const days = Math.floor(secondsLeft / secondsInADay);
@@ -19,3 +19,5 @@ module.exports = (vod_id, content_offset_seconds) => {
 
   return `https://www.twitch.tv/videos/${vod_id}?t=${hours}h${minutes}m${secondsLeft}s`;
 };
+
+module.exports = getVodLink;

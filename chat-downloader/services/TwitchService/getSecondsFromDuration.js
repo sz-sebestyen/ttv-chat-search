@@ -14,7 +14,7 @@ const postfixToSecondsMapings = [
 
 const getDigitsWithPostfixRegex = (postfix) => new RegExp(`(\\d+)${postfix}`);
 
-module.exports = (duration) => {
+const getSecondsFromDuration = (duration) => {
   const SECONDS_INIT = 0;
 
   return postfixToSecondsMapings.reduce((seconds, mapping) => {
@@ -25,3 +25,5 @@ module.exports = (duration) => {
     return match ? seconds + match[1] : seconds;
   }, SECONDS_INIT);
 };
+
+module.exports = getSecondsFromDuration;

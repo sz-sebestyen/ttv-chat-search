@@ -1,7 +1,7 @@
 const twitchApi = require("../../TwitchApi");
 const VodInfo = require("../../models/VodInfo");
 
-module.exports = async (id) => {
+const getVodInfo = async (id) => {
   const vodInfoInDatabase = await VodInfo.findOne({ id });
 
   if (vodInfoInDatabase?.chatStatus !== "error") {
@@ -16,3 +16,5 @@ module.exports = async (id) => {
     return null;
   }
 };
+
+module.exports = getVodInfo;

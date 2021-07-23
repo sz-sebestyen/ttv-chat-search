@@ -37,7 +37,7 @@ const getNotLateComments = (comments, endSeconds) => {
   return comments.filter(isNotLateComment);
 };
 
-module.exports = async (vodId, startSeconds, endSeconds) => {
+const downloadChatPiece = async (vodId, startSeconds, endSeconds) => {
   const isTooLong = endSeconds > SECONDS_IN_A_DAY;
 
   if (isTooLong) {
@@ -60,3 +60,5 @@ module.exports = async (vodId, startSeconds, endSeconds) => {
   rename_ids(chatPage.comments);
   await saveComments(chatPage.comments);
 };
+
+module.exports = downloadChatPiece;
