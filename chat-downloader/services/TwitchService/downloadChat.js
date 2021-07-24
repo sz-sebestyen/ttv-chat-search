@@ -4,15 +4,18 @@ const downloadChatPiece = require("./downloadChatPiece");
 
 const NUMBER_OF_CHAT_DOWNLOAD_PROCESSSES = 4;
 
+const getSectionMaker = (length) => (_, index) => ({
+  start: index * length,
+  end: (index + 1) * length,
+});
+
 const getChatSections = (end, numberOfSections) => {
   const sectionLength = Math.floor(end / numberOfSections);
 
-  const createSection = (_, index) => ({
-    start: index * sectionLength,
-    end: (index + 1) * sectionLength,
-  });
-
-  const sections = Array.from({ length: numberOfSections }, createSection);
+  const sections = Array.from(
+    { length: numberOfSections },
+    getSectionMaker(sectionLength)
+  );
 
   sections[sections.length - 1].end = end;
 

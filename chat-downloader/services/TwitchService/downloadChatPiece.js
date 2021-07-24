@@ -19,9 +19,7 @@ const rename_ids = (comments) => {
   });
 };
 
-const saveComments = async (comments) => {
-  await ChatMessage.insertMany(comments);
-};
+const saveComments = (comments) => ChatMessage.insertMany(comments);
 
 const getNotEarlyComments = (comments, startSeconds) => {
   const isNotEarlyComment = ({ content_offset_seconds }) =>
