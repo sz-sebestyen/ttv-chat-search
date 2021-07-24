@@ -1,7 +1,11 @@
 version: "3"
+
 services:
   backend:
-    build: ./backend
+    build:
+      context: ./backend
+      args:
+        WORKDIR: /app
     image: szsebestyen/ttv-chat-search-backend
     depends_on:
       - mongo
@@ -12,9 +16,14 @@ services:
       - 8080:8080
     networks:
       - the-network
+    volumes:
+      - ./backend:/app/
 
   chat-downloader:
-    build: ./chat-downloader
+    build:
+      context: ./chat-downloader
+      args:
+        WORKDIR: /app
     image: szsebestyen/ttv-chat-search-chat-downloader
     depends_on:
       - mongo
@@ -24,6 +33,8 @@ services:
       - 5000:5000
     networks:
       - the-network
+    volumes:
+      - ./chat-downloader:/app/
 
   mongo:
     image: mongo:4.4.6

@@ -1,5 +1,6 @@
 FROM node:14-alpine
-WORKDIR /app
+ARG WORKDIR
+WORKDIR $WORKDIR
 COPY package*.json ./
 RUN npm ci
 COPY . ./
