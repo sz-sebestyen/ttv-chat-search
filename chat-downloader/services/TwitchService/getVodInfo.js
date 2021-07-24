@@ -1,20 +1,24 @@
 const twitchApi = require("../../TwitchApi");
 const VodInfo = require("../../models/VodInfo");
 
-const getVodInfo = async (id) => {
-  const vodInfoInDatabase = await VodInfo.findOne({ id });
+const isMissing = (vodInfo) => !vodInfo || vodInfo.chatStatus === "error";
 
-  if (vodInfoInDatabase?.chatStatus !== "error") {
-    return vodInfoInDatabase;
-  }
-
+const getFreshvodInfo = async (id) => {
   const freshVodInfo = await twitchApi.getVodInfo(id);
 
-  if (freshVodInfo) {
-    return new VodInfo(freshVodInfo).save();
-  } else {
-    return null;
+  return freshVodInfo && new VodInfo(freshVodInfo).save();
+};
+
+const getVodInfoFromDatabase = (id) => VodInfo.findOne({ id });
+
+const getVodInfo = async (id) => {
+  let vodInfo = await getVodInfoFromDatabase(id);
+
+  if (isMissing(vodInfo)) {
+    vodInfo = getFreshvodInfo(id);
   }
+
+  return vodInfo;
 };
 
 module.exports = getVodInfo;
