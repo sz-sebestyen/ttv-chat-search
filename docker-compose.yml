@@ -1,0 +1,42 @@
+version: "3"
+services:
+  backend:
+    build: ./backend
+    image: szsebestyen/ttv-chat-search-backend
+    depends_on:
+      - mongo
+      - chat-downloader
+    environment:
+      - DB_CONNECTION=mongodb://mongo:27017/test
+    ports:
+      - 8080:8080
+    networks:
+      - the-network
+
+  chat-downloader:
+    build: ./chat-downloader
+    image: szsebestyen/ttv-chat-search-chat-downloader
+    depends_on:
+      - mongo
+    environment:
+      - DB_CONNECTION=mongodb://mongo:27017/test
+    ports:
+      - 5000:5000
+    networks:
+      - the-network
+
+  mongo:
+    image: mongo:4.4.6
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - the-network
+
+networks:
+  the-network:
+    driver: bridge
+volumes:
+  mongo-data:
+    driver: local
