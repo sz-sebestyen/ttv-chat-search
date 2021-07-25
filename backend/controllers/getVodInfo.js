@@ -6,23 +6,20 @@ const NOT_FOUND = 404;
 
 const { CHAT_DOWNLOADER_HOST } = process.env;
 
-const downloadChat = async (req, res, next) => {
+const getVodInfo = async (req, res, next) => {
   const { id } = req.params;
 
-  // TODO: check user is authenticated, if so, then save the vod request
-
   const chatDownloaderResponse = await fetch(
-    `${CHAT_DOWNLOADER_HOST}/vod/${id}/chat`,
-    {
-      method: "POST",
-    }
+    `${CHAT_DOWNLOADER_HOST}/vod/${id}`
   );
 
   if (chatDownloaderResponse.status === SUCCESS) {
-    res.json({ message: "Vod request registered" });
+    const vodInfo = await chatDownloaderResponse.json();
+
+    res.json(vodInfo);
   } else {
     res.stauts(NOT_FOUND).json({ message: "Vod not found" });
   }
 };
 
-module.exports = asyncHandler(downloadChat);
+module.exports = asyncHandler(getVodInfo);
