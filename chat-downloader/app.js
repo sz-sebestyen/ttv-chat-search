@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // routes
 app.post("/vod/:id/chat", [getVodInfo, vodController, downloadChat]);
-app.get("/vod/:id/", [getVodInfo, vodController]);
+app.get("/vod/:id", [getVodInfo, vodController]);
 
 app.use((err, req, res, next) => {
   if (err) {

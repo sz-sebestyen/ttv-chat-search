@@ -6,7 +6,7 @@ const vodController = async (req, res, next) => {
   const { vodInfo } = req;
 
   if (vodInfo) {
-    res.json({ message: "OK" });
+    res.json(vodInfo);
     next();
   } else {
     res.status(NOT_FOUND).json({ message: "vod not found" });
