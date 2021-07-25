@@ -34,7 +34,7 @@ const downloadChat = async (vodInfo) => {
   const vodLengthInSeconds = getSecondsFromDuration(vodInfo.duration);
 
   const chatSections = getChatSections(
-    15, // vodLengthInSeconds when I set up a local DB
+    vodLengthInSeconds,
     NUMBER_OF_CHAT_DOWNLOAD_PROCESSSES
   );
 
