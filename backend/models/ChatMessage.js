@@ -55,9 +55,12 @@ const ChatMessageSchema = new Schema({
 });
 
 ChatMessageSchema.index({
-  content_id: 1,
   created_at: 1,
-  "message.body": "text",
+});
+
+ChatMessageSchema.index({
+  content_id: 1,
+  "message.body": 1,
 });
 
 const ChatMessage = mongoose.model("ChatMessage", ChatMessageSchema);
