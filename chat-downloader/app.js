@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 
 // controllers
-const vodController = require("./controllers/vod");
+const vodInfoResponse = require("./controllers/vodInfoResponse");
 
 // middlewares
 const downloadChat = require("./middlewares/downloadChat");
@@ -14,8 +14,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // routes
-app.post("/vod/:id/chat", [getVodInfo, vodController, downloadChat]);
-app.get("/vod/:id", [getVodInfo, vodController]);
+app.post("/vod/:id/chat", [getVodInfo, vodInfoResponse, downloadChat]);
+app.get("/vod/:id", [getVodInfo, vodInfoResponse]);
 
 app.use(errorHandler);
 

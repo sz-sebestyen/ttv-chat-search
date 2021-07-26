@@ -2,7 +2,7 @@ const asyncHandler = require("express-async-handler");
 
 const NOT_FOUND = 404;
 
-const vodController = async (req, res, next) => {
+const vodInfoResponse = async (req, res, next) => {
   const { vodInfo } = req;
 
   if (vodInfo) {
@@ -13,4 +13,4 @@ const vodController = async (req, res, next) => {
   }
 };
 
-module.exports = asyncHandler(vodController);
+module.exports = asyncHandler(vodInfoResponse);
