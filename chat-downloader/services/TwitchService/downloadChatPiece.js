@@ -35,7 +35,12 @@ const getNotLateComments = (comments, endSeconds) => {
   return comments.filter(isNotLateComment);
 };
 
-const downloadChatPiece = async (vodId, startSeconds, endSeconds) => {
+const downloadChatPiece = async (
+  vodId,
+  startSeconds,
+  endSeconds,
+  progressTracker
+) => {
   const isTooLong = endSeconds > SECONDS_IN_A_DAY;
 
   if (isTooLong) {
@@ -46,9 +51,20 @@ const downloadChatPiece = async (vodId, startSeconds, endSeconds) => {
 
   chatPage.comments = getNotEarlyComments(chatPage.comments, startSeconds);
 
+  // TODO: save the info that comments are not available
+  if (!chatPage.comments[0]) {
+    console.log(chatPage);
+  }
+
   while (isNotLastPage(chatPage, endSeconds)) {
     rename_ids(chatPage.comments);
     saveComments(chatPage.comments);
+
+    const progress =
+      (chatPage.comments[0].content_offset_seconds - startSeconds) /
+      (endSeconds - startSeconds);
+
+    progressTracker.track(startSeconds, progress);
 
     chatPage = await twitchApi.getVodChatPageAtCursor(vodId, chatPage._next);
   }

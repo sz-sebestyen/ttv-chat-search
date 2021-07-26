@@ -1,6 +1,8 @@
 const ChatMessage = require("../../models/ChatMessage");
+const VodInfo = require("../../models/VodInfo");
 const getSecondsFromDuration = require("./getSecondsFromDuration");
 const downloadChatPiece = require("./downloadChatPiece");
+const DownloadTracker = require("./DownloadTracker");
 
 const NUMBER_OF_CHAT_DOWNLOAD_PROCESSSES = 4;
 
@@ -22,6 +24,10 @@ const getChatSections = (end, numberOfSections) => {
   return sections;
 };
 
+const setChatStatus = (id, chatStatus) => {
+  VodInfo.updateOne({ id }, { chatStatus });
+};
+
 const downloadChat = async (vodInfo) => {
   const hasDownloadStartedElsewhere = await ChatMessage.findOne({
     content_id: vodInfo.id,
@@ -38,25 +44,26 @@ const downloadChat = async (vodInfo) => {
     NUMBER_OF_CHAT_DOWNLOAD_PROCESSSES
   );
 
-  try {
-    const downloadProcesses = chatSections.map(({ start, end }) =>
-      downloadChatPiece(vodInfo.id, start, end)
-    );
+  const progressTracker = new DownloadTracker(
+    NUMBER_OF_CHAT_DOWNLOAD_PROCESSSES
+  );
 
-    vodInfo.chatStatus = "downloading";
-    vodInfo.save();
+  try {
+    setChatStatus(vodInfo.id, "downloading");
+
+    const downloadProcesses = chatSections.map(({ start, end }) =>
+      downloadChatPiece(vodInfo.id, start, end, progressTracker)
+    );
 
     await Promise.all(downloadProcesses);
 
-    vodInfo.chatStatus = "downloaded";
-    vodInfo.save();
+    setChatStatus(vodInfo.id, "downloaded");
 
     console.log("chat download finished");
   } catch (error) {
     console.log("errer when downloading chat: ", error);
 
-    vodInfo.chatStatus = "error";
-    vodInfo.save();
+    setChatStatus(vodInfo.id, "error");
   }
 };
 
