@@ -1,4 +1,5 @@
 const express = require("express");
+require("express-async-errors");
 const app = express();
 const errorHandler = require("./middlewares/errorHandler");
 const downloadChat = require("./controllers/downloadChat");

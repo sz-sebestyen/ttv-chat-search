@@ -1,4 +1,3 @@
-const asyncHandler = require("express-async-handler");
 const TwitchService = require("../services/TwitchService");
 
 const downloadChat = async (req, res, next) => {
@@ -7,4 +6,4 @@ const downloadChat = async (req, res, next) => {
   TwitchService.downloadChat(vodInfo);
 };
 
-module.exports = asyncHandler(downloadChat);
+module.exports = downloadChat;

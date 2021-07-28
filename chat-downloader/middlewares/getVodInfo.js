@@ -1,4 +1,3 @@
-const asyncHandler = require("express-async-handler");
 const TwitchService = require("../services/TwitchService");
 
 const getVodInfo = async (req, res, next) => {
@@ -9,4 +8,4 @@ const getVodInfo = async (req, res, next) => {
   next();
 };
 
-module.exports = asyncHandler(getVodInfo);
+module.exports = getVodInfo;

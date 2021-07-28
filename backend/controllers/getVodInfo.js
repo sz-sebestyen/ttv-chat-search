@@ -1,5 +1,4 @@
 const fetch = require("node-fetch");
-const asyncHandler = require("express-async-handler");
 
 const SUCCESS = 200;
 const NOT_FOUND = 404;
@@ -22,4 +21,4 @@ const getVodInfo = async (req, res, next) => {
   }
 };
 
-module.exports = asyncHandler(getVodInfo);
+module.exports = getVodInfo;

@@ -1,4 +1,3 @@
-const asyncHandler = require("express-async-handler");
 const searchMessages = require("../services/searchMessages");
 
 const searchInChat = async (req, res, next) => {
@@ -10,4 +9,4 @@ const searchInChat = async (req, res, next) => {
   res.json(messages);
 };
 
-module.exports = asyncHandler(searchInChat);
+module.exports = searchInChat;
