@@ -36,6 +36,21 @@ services:
     volumes:
       - ./chat-downloader:/app/
 
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        WORKDIR: /app
+    image: szsebestyen/ttv-chat-search-frontend
+    depends_on:
+      - backend
+    ports:
+      - 3000:80
+    networks:
+      - the-network
+    volumes:
+      - ./frontend:/app/
+
   mongo:
     image: mongo:4.4.6
     ports:
