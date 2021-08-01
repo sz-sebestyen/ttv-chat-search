@@ -3,7 +3,8 @@ import React from "react";
 function Home() {
   return (
     <div>
-      <h1>TTV Chat Search</h1>
+      <p>Copy paste the link or id of the VOD</p>
+      <input type="text" className="border" />
     </div>
   );
 }

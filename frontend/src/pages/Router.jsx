@@ -1,11 +1,11 @@
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import NotFound from "./NotFound";
 import Home from "./Home";
-import Menu from "../components/Menu";
+import NavBar from "../components/NavBar";
 
 const Router = () => (
   <BrowserRouter>
-    <Menu />
+    <NavBar />
 
     <Switch>
       <Route exact path="/">
