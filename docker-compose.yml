@@ -39,6 +39,7 @@ services:
   frontend:
     build:
       context: ./frontend
+      dockerfile: Dockerfile.dev
     image: szsebestyen/ttv-chat-search-frontend
     depends_on:
       - backend
