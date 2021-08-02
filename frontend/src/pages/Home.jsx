@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 const vodIdCaptureRegex =
   /^((https:\/\/www\.)?twitch\.tv\/videos\/)?(?<vodId>\d+$)/;
 
+const backendHost = process.env.REACT_APP_BACKEND_HOST;
+
 function Home() {
   const [input, setInput] = useState("");
   const [vodId, setVodId] = useState();
@@ -20,8 +22,13 @@ function Home() {
     }
   };
 
-  const getVodInfo = (id) => {
+  const getVodInfo = async (id) => {
     // TODO: fetch vodinfo from backend
+    const res = await fetch(`${backendHost}/vod/${vodId}`);
+
+    const parsed = await res.json();
+
+    console.log(parsed);
   };
 
   useEffect(() => {
