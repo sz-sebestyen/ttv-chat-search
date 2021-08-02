@@ -26,9 +26,9 @@ const VodInfoSchema = new Schema({
   // description: {
   //   type: String,
   // },
-  // created_at: {
-  //   type: String,
-  // },
+  created_at: {
+    type: String,
+  },
   // published_at: {
   //   type: String,
   // },
@@ -36,9 +36,9 @@ const VodInfoSchema = new Schema({
     type: String,
     required: true,
   },
-  // thumbnail_url: {
-  //   type: String,
-  // },
+  thumbnail_url: {
+    type: String,
+  },
   viewable: {
     type: String,
     required: true,

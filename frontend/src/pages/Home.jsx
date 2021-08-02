@@ -5,9 +5,12 @@ const vodIdCaptureRegex =
 
 const backendHost = process.env.REACT_APP_BACKEND_HOST;
 
+const SUCCESS = 200;
+
 function Home() {
   const [input, setInput] = useState("");
   const [vodId, setVodId] = useState();
+  const [vodInfo, setVodInfo] = useState();
 
   const storeInput = (event) => {
     const newInputValue = event.target.value.trim();
@@ -18,22 +21,37 @@ function Home() {
     if (match) {
       setVodId(match.groups.vodId);
     } else {
+      setVodId();
       // TODO: warn user
     }
   };
 
   const getVodInfo = async (id) => {
-    // TODO: fetch vodinfo from backend
     const res = await fetch(`${backendHost}/vod/${vodId}`);
 
-    const parsed = await res.json();
+    if (res.status === SUCCESS) {
+      const parsed = await res.json();
 
-    console.log(parsed);
+      setVodInfo(parsed);
+    } else {
+      // TODO: show some not found message
+      setVodInfo();
+    }
   };
 
   useEffect(() => {
-    vodId && getVodInfo(vodId);
+    if (vodId) {
+      getVodInfo(vodId);
+    } else {
+      setVodInfo();
+    }
   }, [vodId]); // eslint-disable-line
+
+  const getThumbnailUrl = () => {
+    return vodInfo.thumbnail_url
+      .replace("%{width}", "320")
+      .replace("%{height}", "180");
+  };
 
   return (
     <div>
@@ -44,6 +62,10 @@ function Home() {
         value={input}
         onChange={storeInput}
       />
+
+      <div className="border">
+        {vodInfo && <img src={getThumbnailUrl()} alt="Vod thumbnail" />}
+      </div>
     </div>
   );
 }
