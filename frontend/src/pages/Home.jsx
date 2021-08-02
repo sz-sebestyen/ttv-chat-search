@@ -1,57 +1,35 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import useVodInfo from "../hooks/useVodInfo";
 
 const vodIdCaptureRegex =
   /^((https:\/\/www\.)?twitch\.tv\/videos\/)?(?<vodId>\d+$)/;
 
-const backendHost = process.env.REACT_APP_BACKEND_HOST;
-
-const SUCCESS = 200;
-
 function Home() {
   const [input, setInput] = useState("");
   const [vodId, setVodId] = useState();
-  const [vodInfo, setVodInfo] = useState();
+  const [vodInfo, vodInfoError] = useVodInfo(vodId);
 
-  const storeInput = (event) => {
-    const newInputValue = event.target.value.trim();
+  const storeInput = ({ target }) => {
+    const newInputValue = target.value.trim();
     setInput(newInputValue);
 
     const match = newInputValue.match(vodIdCaptureRegex);
 
     if (match) {
       setVodId(match.groups.vodId);
+      target.setCustomValidity("");
     } else {
       setVodId();
-      // TODO: warn user
+      target.setCustomValidity("Neither a vod id or a link");
     }
+
+    target.reportValidity();
   };
 
-  const getVodInfo = async (id) => {
-    const res = await fetch(`${backendHost}/vod/${vodId}`);
-
-    if (res.status === SUCCESS) {
-      const parsed = await res.json();
-
-      setVodInfo(parsed);
-    } else {
-      // TODO: show some not found message
-      setVodInfo();
-    }
-  };
-
-  useEffect(() => {
-    if (vodId) {
-      getVodInfo(vodId);
-    } else {
-      setVodInfo();
-    }
-  }, [vodId]); // eslint-disable-line
-
-  const getThumbnailUrl = () => {
-    return vodInfo.thumbnail_url
+  const getThumbnailUrl = () =>
+    vodInfo.thumbnail_url
       .replace("%{width}", "320")
       .replace("%{height}", "180");
-  };
 
   return (
     <div>
@@ -65,6 +43,7 @@ function Home() {
 
       <div className="border">
         {vodInfo && <img src={getThumbnailUrl()} alt="Vod thumbnail" />}
+        {vodInfoError?.message}
       </div>
     </div>
   );
