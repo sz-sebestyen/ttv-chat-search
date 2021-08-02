@@ -11,9 +11,11 @@ services:
       - mongo
       - chat-downloader
     environment:
-      - DB_CONNECTION=mongodb://mongo:27017/test
+      - DB_CONNECTION
+      - CHAT_DOWNLOADER_HOST
+      - PORT=$BACKEND_PORT
     ports:
-      - 8080:8080
+      - $BACKEND_PORT:$BACKEND_PORT
     networks:
       - the-network
     volumes:
@@ -28,9 +30,13 @@ services:
     depends_on:
       - mongo
     environment:
-      - DB_CONNECTION=mongodb://mongo:27017/test
+      - DB_CONNECTION
+      - TWITCH_CLIENT_ID
+      - TWITCH_CLIENT_SECRET
+      - TWITCH_ACCESS_TOKEN
+      - PORT=$CHAT_DOWNLOADER_PORT
     ports:
-      - 5000:5000
+      - $CHAT_DOWNLOADER_PORT:$CHAT_DOWNLOADER_PORT
     networks:
       - the-network
     volumes:

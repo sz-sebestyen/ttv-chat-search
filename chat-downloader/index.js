@@ -1,4 +1,3 @@
-require("dotenv").config();
 require("./database/connect");
 const app = require("./app");
 const twitchApi = require("./TwitchApi");
