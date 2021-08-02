@@ -17,7 +17,7 @@ const getVodInfo = async (req, res, next) => {
 
     res.json(vodInfo);
   } else {
-    res.stauts(NOT_FOUND).json({ message: "Vod not found" });
+    res.status(NOT_FOUND).json({ message: "Vod not found" });
   }
 };
 
