@@ -11,7 +11,15 @@ function VodInfoPreview({ vodId }) {
 
   return (
     <div className="border">
-      {vodInfo && <img src={getThumbnailUrl()} alt="Vod thumbnail" />}
+      {vodInfo && (
+        <div>
+          <img src={getThumbnailUrl()} alt="Vod thumbnail" />
+          <p className="truncate" title={vodInfo.title}>
+            {vodInfo.title}
+          </p>
+        </div>
+      )}
+
       {vodInfoError?.message}
     </div>
   );

@@ -27,7 +27,7 @@ function Home() {
 
   return (
     <div>
-      <p>Copy paste the link or id of the VOD below</p>
+      <p className="">Copy paste the link or id of the VOD below</p>
       <input
         type="text"
         className="border"
