@@ -30,7 +30,7 @@ function Home() {
       <p className="">Copy paste the link or id of the VOD below</p>
       <input
         type="text"
-        className="border"
+        className="bg-surface"
         value={input}
         onChange={storeInput}
       />

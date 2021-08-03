@@ -7,7 +7,7 @@ function Menu() {
   const toggleMenu = () => setIsOpen((prevIsOpen) => !prevIsOpen);
 
   return (
-    <div onClick={toggleMenu}>
+    <div onClick={toggleMenu} className="">
       {isOpen ? <HiOutlineX /> : <HiOutlineMenu />}
     </div>
   );

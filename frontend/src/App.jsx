@@ -4,7 +4,7 @@ import IconTheme from "./components/IconTheme";
 
 function App() {
   return (
-    <div className="App">
+    <div className="App bg-background text-white">
       <IconTheme>
         <Router />
       </IconTheme>
