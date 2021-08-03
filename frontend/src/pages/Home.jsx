@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import useVodInfo from "../hooks/useVodInfo";
+import VodInfoPreview from "../components/VodInfoPreview";
 
 const vodIdCaptureRegex =
   /^((https:\/\/www\.)?twitch\.tv\/videos\/)?(?<vodId>\d+$)/;
@@ -7,7 +7,6 @@ const vodIdCaptureRegex =
 function Home() {
   const [input, setInput] = useState("");
   const [vodId, setVodId] = useState();
-  const [vodInfo, vodInfoError] = useVodInfo(vodId);
 
   const storeInput = ({ target }) => {
     const newInputValue = target.value.trim();
@@ -26,11 +25,6 @@ function Home() {
     target.reportValidity();
   };
 
-  const getThumbnailUrl = () =>
-    vodInfo.thumbnail_url
-      .replace("%{width}", "320")
-      .replace("%{height}", "180");
-
   return (
     <div>
       <p>Copy paste the link or id of the VOD below</p>
@@ -41,10 +35,7 @@ function Home() {
         onChange={storeInput}
       />
 
-      <div className="border">
-        {vodInfo && <img src={getThumbnailUrl()} alt="Vod thumbnail" />}
-        {vodInfoError?.message}
-      </div>
+      {vodId && <VodInfoPreview {...{ vodId }} />}
     </div>
   );
 }
