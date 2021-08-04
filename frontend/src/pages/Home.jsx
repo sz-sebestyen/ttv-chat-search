@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import VodInfoPreview from "../components/VodInfoPreview";
 
 const vodIdCaptureRegex =
@@ -7,6 +7,16 @@ const vodIdCaptureRegex =
 function Home() {
   const [input, setInput] = useState("");
   const [vodId, setVodId] = useState();
+
+  const timeoutRef = useRef(null);
+
+  const scheduleValidityReport = (target) => {
+    clearTimeout(timeoutRef.current);
+
+    timeoutRef.current = setTimeout(() => {
+      target.reportValidity();
+    }, 2000);
+  };
 
   const storeInput = ({ target }) => {
     const newInputValue = target.value.trim();
@@ -22,7 +32,7 @@ function Home() {
       target.setCustomValidity("Neither a vod id or a link");
     }
 
-    target.reportValidity();
+    scheduleValidityReport(target);
   };
 
   return (
@@ -32,7 +42,13 @@ function Home() {
       </p>
       <input
         type="text"
-        className="bg-surface rounded-sm w-40"
+        className={[
+          "bg-surface",
+          "rounded",
+          "focus:outline-none",
+          "focus:ring",
+          "focus:ring-violet-400",
+        ].join(" ")}
         value={input}
         onChange={storeInput}
       />
