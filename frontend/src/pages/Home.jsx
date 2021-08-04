@@ -47,7 +47,8 @@ function Home() {
           "focus:outline-none",
           "focus:ring",
           "focus:ring-violet-400",
-          "invalid:bg-primary",
+          "invalid:ring",
+          "invalid:ring-red-400",
         ].join(" ")}
         value={input}
         onChange={storeInput}
