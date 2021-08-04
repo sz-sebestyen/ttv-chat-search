@@ -26,11 +26,13 @@ function Home() {
   };
 
   return (
-    <div>
-      <p className="">Copy paste the link or id of the VOD below</p>
+    <div className="text-center">
+      <p className="text-violet-400">
+        Copy paste the link or id of the VOD below
+      </p>
       <input
         type="text"
-        className="bg-surface"
+        className="bg-surface rounded-sm w-40"
         value={input}
         onChange={storeInput}
       />

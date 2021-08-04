@@ -1,3 +1,5 @@
+const colors = require("tailwindcss/colors");
+
 module.exports = {
   mode: "jit",
   purge: [
@@ -15,6 +17,7 @@ module.exports = {
         secondary: "#4BB0DB",
         background: "#121212",
         surface: "#1F1F1F",
+        violet: colors.violet,
       },
     },
   },
