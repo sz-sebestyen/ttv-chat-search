@@ -30,9 +30,8 @@ function Home() {
     } else {
       setVodId();
       target.setCustomValidity("Neither a vod id or a link");
+      scheduleValidityReport(target);
     }
-
-    scheduleValidityReport(target);
   };
 
   return (
@@ -48,6 +47,7 @@ function Home() {
           "focus:outline-none",
           "focus:ring",
           "focus:ring-violet-400",
+          "invalid:bg-primary",
         ].join(" ")}
         value={input}
         onChange={storeInput}
