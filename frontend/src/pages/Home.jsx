@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import VodInfoPreview from "../components/VodInfoPreview";
+import useVodInfo from "../hooks/useVodInfo";
 
 const vodIdCaptureRegex =
   /^((https:\/\/www\.)?twitch\.tv\/videos\/)?(?<vodId>\d+$)/;
@@ -7,6 +8,7 @@ const vodIdCaptureRegex =
 function Home() {
   const [input, setInput] = useState("");
   const [vodId, setVodId] = useState();
+  const [vodInfo, vodInfoError] = useVodInfo(vodId);
 
   const timeoutRef = useRef(null);
 
@@ -36,7 +38,7 @@ function Home() {
 
   return (
     <div className="bg-background p-4">
-      <div className="flex flex-col bg-surface rounded px-3 py-2 mb-4 max-w-sm">
+      <div className="flex flex-col bg-surface rounded px-3 py-2 mx-auto mb-4 max-w-sm">
         <input
           type="text"
           id="vodLinkInput"
@@ -57,6 +59,7 @@ function Home() {
           ].join(" ")}
           value={input}
           onChange={storeInput}
+          spellCheck="false"
         />
 
         <label htmlFor="vodLinkInput" className="text-sm mb-1">
@@ -68,7 +71,15 @@ function Home() {
         ></div>
       </div>
 
-      {vodId && <VodInfoPreview {...{ vodId }} />}
+      {vodInfo && <VodInfoPreview {...{ vodInfo }} />}
+
+      {vodInfoError?.message}
+
+      {vodInfo && (
+        <button className="m-auto block py-2 px-3 bg-green-500 text-black text-md rounded mt-6">
+          Continue
+        </button>
+      )}
     </div>
   );
 }
