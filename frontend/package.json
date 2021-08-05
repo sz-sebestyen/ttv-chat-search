@@ -15,8 +15,8 @@
   },
   "scripts": {
     "start": "npm-run-all --parallel start:*",
-    "start:watch-css": "npm run build:css -- -w",
     "start:react": "react-scripts start",
+    "start:watch-css": "npm run build:css -- -w",
     "build": "npm-run-all build:*",
     "build:css": "tailwindcss --no-autoprefixer -o src/index.css",
     "build:react": "react-scripts build",

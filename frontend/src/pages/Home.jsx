@@ -14,7 +14,7 @@ function Home() {
     clearTimeout(timeoutRef.current);
 
     timeoutRef.current = setTimeout(() => {
-      target.reportValidity();
+      target.setCustomValidity("Neither a vod id or a link");
     }, 2000);
   };
 
@@ -29,30 +29,42 @@ function Home() {
       target.setCustomValidity("");
     } else {
       setVodId();
-      target.setCustomValidity("Neither a vod id or a link");
       scheduleValidityReport(target);
     }
   };
 
   return (
-    <div className="text-center">
-      <p className="text-violet-400">
-        Copy paste the link or id of the VOD below
-      </p>
-      <input
-        type="text"
-        className={[
-          "bg-surface",
-          "rounded",
-          "focus:outline-none",
-          "focus:ring",
-          "focus:ring-violet-400",
-          "invalid:ring",
-          "invalid:ring-red-400",
-        ].join(" ")}
-        value={input}
-        onChange={storeInput}
-      />
+    <div className="">
+      <div className="flex flex-col m-4 bg-background gap-1.5 rounded p-2">
+        <input
+          type="text"
+          id="vodLinkInput"
+          className={[
+            "bg-surface",
+            "rounded",
+            "focus:outline-none",
+            "focus:ring-2",
+            "focus:ring-violet-400",
+            "invalid:ring-2",
+            "invalid:ring-red-400",
+            "order-1",
+            "peer",
+            "px-2",
+            "py-1",
+            "text-sm",
+          ].join(" ")}
+          value={input}
+          onChange={storeInput}
+        />
+
+        <label htmlFor="vodLinkInput" className="">
+          VOD link/id:
+        </label>
+        <div
+          data-content="Must be either the link or the id of the vod."
+          className="peer-invalid:before:content-[attr(data-content)] order-last text-red-400 text-xs"
+        ></div>
+      </div>
 
       {vodId && <VodInfoPreview {...{ vodId }} />}
     </div>
