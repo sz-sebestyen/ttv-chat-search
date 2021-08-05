@@ -26,6 +26,7 @@ function Home() {
 
     if (match) {
       setVodId(match.groups.vodId);
+      clearTimeout(timeoutRef.current);
       target.setCustomValidity("");
     } else {
       setVodId();
@@ -34,13 +35,13 @@ function Home() {
   };
 
   return (
-    <div className="">
-      <div className="flex flex-col m-4 bg-background gap-1.5 rounded p-2">
+    <div className="bg-background p-4">
+      <div className="flex flex-col bg-surface rounded px-3 py-2 mb-4 max-w-sm">
         <input
           type="text"
           id="vodLinkInput"
           className={[
-            "bg-surface",
+            "bg-background",
             "rounded",
             "focus:outline-none",
             "focus:ring-2",
@@ -52,17 +53,18 @@ function Home() {
             "px-2",
             "py-1",
             "text-sm",
+            "text-gray-500",
           ].join(" ")}
           value={input}
           onChange={storeInput}
         />
 
-        <label htmlFor="vodLinkInput" className="">
+        <label htmlFor="vodLinkInput" className="text-sm mb-1">
           VOD link/id:
         </label>
         <div
           data-content="Must be either the link or the id of the vod."
-          className="peer-invalid:before:content-[attr(data-content)] order-last text-red-400 text-xs"
+          className="peer-invalid:before:content-[attr(data-content)] order-last text-red-400 text-xs pt-1"
         ></div>
       </div>
 
