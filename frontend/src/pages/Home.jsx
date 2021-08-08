@@ -55,11 +55,12 @@ function Home() {
             "px-2",
             "py-1",
             "text-sm",
-            "text-gray-500",
+            "placeholder-gray-700",
           ].join(" ")}
           value={input}
           onChange={storeInput}
           spellCheck="false"
+          placeholder="https://www.twitch.tv/videos/0000000000"
         />
 
         <label htmlFor="vodLinkInput" className="text-sm mb-1">
