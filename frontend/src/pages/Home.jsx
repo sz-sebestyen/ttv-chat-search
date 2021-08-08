@@ -7,18 +7,13 @@ const vodIdCaptureRegex =
 
 function Home() {
   const [input, setInput] = useState("");
-  const [vodId, setVodId] = useState();
+  const [vodId, setVodId] = useState(null);
   const [vodInfo, vodInfoError] = useVodInfo(vodId);
 
   const timeoutRef = useRef(null);
 
-  const scheduleValidityReport = (target) => {
-    clearTimeout(timeoutRef.current);
-
-    timeoutRef.current = setTimeout(() => {
-      target.setCustomValidity("Neither a vod id or a link");
-    }, 2000);
-  };
+  const getValidityText = (match) =>
+    match ? "" : "Neither a vod id or a link";
 
   const storeInput = ({ target }) => {
     const newInputValue = target.value.trim();
@@ -26,14 +21,13 @@ function Home() {
 
     const match = newInputValue.match(vodIdCaptureRegex);
 
-    if (match) {
-      setVodId(match.groups.vodId);
-      clearTimeout(timeoutRef.current);
-      target.setCustomValidity("");
-    } else {
-      setVodId();
-      scheduleValidityReport(target);
-    }
+    clearTimeout(timeoutRef.current);
+
+    timeoutRef.current = setTimeout(() => {
+      target.setCustomValidity(getValidityText(match));
+
+      setVodId(match?.groups.vodId);
+    }, 1500);
   };
 
   return (
