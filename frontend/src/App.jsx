@@ -1,5 +1,5 @@
-import Router from "./pages/Router";
-import IconTheme from "./components/IconTheme";
+import { Router } from "./pages";
+import { IconTheme } from "./components";
 
 function App() {
   return (

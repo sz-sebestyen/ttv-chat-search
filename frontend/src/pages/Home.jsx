@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
-import VodInfoPreview from "../components/VodInfoPreview";
-import Input from "../components/UI/Input";
-import useVodInfo from "../hooks/useVodInfo";
+import { VodInfoPreview } from "../components";
+import { Input } from "../components/UI";
+import { useVodInfo } from "../hooks";
 
 const vodIdCaptureRegex =
   /^((https:\/\/www\.)?twitch\.tv\/videos\/)?(?<vodId>\d+$)/;

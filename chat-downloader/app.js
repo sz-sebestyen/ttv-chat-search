@@ -6,9 +6,7 @@ const app = express();
 const vodInfoResponse = require("./controllers/vodInfoResponse");
 
 // middlewares
-const downloadChat = require("./middlewares/downloadChat");
-const getVodInfo = require("./middlewares/getVodInfo");
-const errorHandler = require("./middlewares/errorHandler");
+const { downloadChat, getVodInfo, errorHandler } = require("./middlewares");
 
 // app-wide middlewares
 app.use(express.json());
