@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import VodInfoPreview from "../components/VodInfoPreview";
+import Input from "../components/UI/Input";
 import useVodInfo from "../hooks/useVodInfo";
 
 const vodIdCaptureRegex =
@@ -33,24 +34,9 @@ function Home() {
   return (
     <div className="bg-background p-4">
       <div className="flex flex-col bg-surface rounded px-3 py-2 mx-auto mb-4 max-w-sm">
-        <input
+        <Input
           type="text"
           id="vodLinkInput"
-          className={[
-            "bg-background",
-            "rounded",
-            "focus:outline-none",
-            "focus:ring-2",
-            "focus:ring-violet-400",
-            "invalid:ring-2",
-            "invalid:ring-red-400",
-            "order-1",
-            "peer",
-            "px-2",
-            "py-1",
-            "text-sm",
-            "placeholder-gray-700",
-          ].join(" ")}
           value={input}
           onChange={storeInput}
           spellCheck="false"
