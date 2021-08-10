@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { VodInfoPreview } from "../components";
-import { Input } from "../components/UI";
+import { InputWithLabel } from "../components/UI";
 import { useVodInfo } from "../hooks";
 
 const vodIdCaptureRegex =
@@ -33,7 +33,17 @@ function Home() {
 
   return (
     <div className="bg-background p-4">
-      <div className="flex flex-col bg-surface rounded px-3 py-2 mx-auto mb-4 max-w-sm">
+      <InputWithLabel
+        type="text"
+        id="vodLinkInput"
+        value={input}
+        onChange={storeInput}
+        spellCheck="false"
+        placeholder="https://www.twitch.tv/videos/0000000000"
+        label="VOD link/id:"
+        invalidMessage="Must be either the link or the id of the vod."
+      />
+      {/*       <div className="flex flex-col bg-surface rounded px-3 py-2 mx-auto mb-4 max-w-sm">
         <Input
           type="text"
           id="vodLinkInput"
@@ -50,7 +60,7 @@ function Home() {
           data-content="Must be either the link or the id of the vod."
           className="peer-invalid:before:content-[attr(data-content)] order-last text-red-400 text-xs pt-1"
         ></div>
-      </div>
+      </div> */}
 
       {vodInfo && <VodInfoPreview {...{ vodInfo }} />}
 
