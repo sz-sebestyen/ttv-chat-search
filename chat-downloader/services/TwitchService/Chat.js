@@ -25,20 +25,8 @@ const setChatStatus = async (id, chatStatus) => {
   await VodInfo.updateOne({ id }, { chatStatus });
 };
 
-const checkForDownloadedChat = async (content_id) => {
-  const hasDownloadStartedElsewhere = await ChatMessage.findOne({
-    content_id,
-  });
-
-  if (hasDownloadStartedElsewhere) {
-    throw Error(`The chat of VOD ${content_id} is already downloaded`);
-  }
-};
-
 class Chat {
   constructor(vodInfo, numberOfThreads) {
-    checkForDownloadedChat(vodInfo.id);
-
     const vodLength = getSecondsFromDuration(vodInfo.duration);
 
     const chatSections = getChatSections(vodLength, numberOfThreads);
