@@ -1,7 +1,7 @@
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import NotFound from "./NotFound";
 import Home from "./Home";
-import Search from "./Search";
+import Vod from "./Vod";
 import NavBar from "../components/NavBar";
 
 const Router = () => (
@@ -9,8 +9,8 @@ const Router = () => (
     <NavBar />
 
     <Switch>
-      <Route exact path="/search">
-        <Search />
+      <Route exact path="/vod/:id">
+        <Vod />
       </Route>
 
       <Route exact path="/">

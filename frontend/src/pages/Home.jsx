@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { useHistory } from "react-router-dom";
 import { VodInfoPreview } from "../components";
 import { InputWithLabel } from "../components/UI";
 import { useVodInfo } from "../hooks";
@@ -7,6 +8,7 @@ const vodIdCaptureRegex =
   /^((https:\/\/www\.)?twitch\.tv\/videos\/)?(?<vodId>\d+$)/;
 
 function Home() {
+  const history = useHistory();
   const [input, setInput] = useState("");
   const [vodId, setVodId] = useState(null);
   const [vodInfo, vodInfoError] = useVodInfo(vodId);
@@ -31,6 +33,10 @@ function Home() {
     }, 1500);
   };
 
+  const goToDownload = () => {
+    history.push(`/vod/${vodId}`);
+  };
+
   return (
     <div className="bg-background p-4">
       <InputWithLabel
@@ -43,31 +49,16 @@ function Home() {
         label="VOD link/id:"
         invalidMessage="Must be either the link or the id of the vod."
       />
-      {/*       <div className="flex flex-col bg-surface rounded px-3 py-2 mx-auto mb-4 max-w-sm">
-        <Input
-          type="text"
-          id="vodLinkInput"
-          value={input}
-          onChange={storeInput}
-          spellCheck="false"
-          placeholder="https://www.twitch.tv/videos/0000000000"
-        />
-
-        <label htmlFor="vodLinkInput" className="text-sm mb-1">
-          VOD link/id:
-        </label>
-        <div
-          data-content="Must be either the link or the id of the vod."
-          className="peer-invalid:before:content-[attr(data-content)] order-last text-red-400 text-xs pt-1"
-        ></div>
-      </div> */}
 
       {vodInfo && <VodInfoPreview {...{ vodInfo }} />}
 
       {vodInfoError?.message}
 
       {vodInfo && (
-        <button className="m-auto block py-2 px-3 bg-green-500 text-black text-md rounded mt-6">
+        <button
+          className="m-auto block py-2 px-3 bg-green-500 text-black text-md rounded mt-6"
+          onClick={goToDownload}
+        >
           Continue
         </button>
       )}
