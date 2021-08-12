@@ -1,3 +1,3 @@
-module.downloadChat = require("./downloadChat");
-module.errorHandler = require("./errorHandler");
-module.getVodInfo = require("./getVodInfo");
+exports.downloadChat = require("./downloadChat");
+exports.errorHandler = require("./errorHandler");
+exports.getVodInfo = require("./getVodInfo");
