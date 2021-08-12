@@ -1,55 +1,54 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { InputWithLabel, SearchTerm } from "../components/UI";
+import { ChatDownloadStatus } from "../components";
 
 const backendHost = process.env.REACT_APP_BACKEND_HOST;
 
 function Vod() {
   const { id } = useParams();
-  const [vodInfo, setVodInfo] = useState({ chatStatus: "waiting" });
-  const intervalRef = useRef(null);
 
-  const poll = async () => {
-    const res = await fetch(`${backendHost}/vod/${id}`);
-    setVodInfo(await res.json());
-  };
+  const [term, setTerm] = useState("");
+  const [isDownloaded, setIsDownloaded] = useState(false);
 
-  const startPolling = () => {
-    intervalRef.current = setInterval(poll, 1500);
-  };
+  const isValidTerm = (searchTerm) => searchTerm.length > 3;
 
-  const startChatDownload = async () => {
-    await fetch(`${backendHost}/vod/${id}/chat`, {
-      method: "POST",
-      headers: { Accept: "application/json" },
-    });
-    startPolling();
-  };
+  const storeTerm = ({ target }) => {
+    setTerm(target.value);
 
-  const shouldStopPolling = (chatStatus) =>
-    !chatStatus || chatStatus === "error" || chatStatus === "downloaded";
-
-  useEffect(() => {
-    startChatDownload();
-  }, []); // eslint-disable-line
-
-  useEffect(() => {
-    if (shouldStopPolling(vodInfo?.chatStatus)) {
-      clearInterval(intervalRef.current);
+    if (isValidTerm(target.value)) {
+      target.setCustomValidity("");
+    } else {
+      target.setCustomValidity("too short");
     }
-  }, [vodInfo]);
+  };
+
+  const doneHandler = useCallback((chatStatus) => {
+    chatStatus === "downloaded" && setIsDownloaded(true);
+    chatStatus === "error" && setIsDownloaded(null);
+  }, []);
 
   return (
     <div className="bg-background p-4">
-      {vodInfo?.chatStatus}
+      <ChatDownloadStatus vodId={id} onDone={doneHandler} />
 
       <InputWithLabel
         type="text"
         id="searchTermInput"
         spellCheck="false"
         label="Search term:"
-        invalidMessage=""
+        invalidMessage="Must be at least 3 letters long."
+        value={term}
+        onChange={storeTerm}
       />
+
+      {isDownloaded && isValidTerm(term) && (
+        <button className="m-auto block py-2 px-3 bg-green-500 text-black text-md rounded mt-6">
+          Search
+        </button>
+      )}
+
+      {isDownloaded === null && <div>something went wrong</div>}
     </div>
   );
 }
