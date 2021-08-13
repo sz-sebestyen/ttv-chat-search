@@ -5,7 +5,7 @@ import { InputWithLabel } from "../components/UI";
 import { useVodInfo } from "../hooks";
 
 const vodIdCaptureRegex =
-  /^((https:\/\/www\.)?twitch\.tv\/videos\/)?(?<vodId>\d+$)/;
+  /^((https:\/\/www\.)?twitch\.tv\/videos\/)?(?<vodId>\d+.*$)/;
 
 function Home() {
   const history = useHistory();
