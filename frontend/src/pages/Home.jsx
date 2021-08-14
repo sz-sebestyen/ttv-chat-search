@@ -30,7 +30,7 @@ function Home() {
       target.setCustomValidity(getValidityText(match));
 
       setVodId(match?.groups.vodId);
-    }, 1500);
+    }, 1000);
   };
 
   const goToDownload = () => {

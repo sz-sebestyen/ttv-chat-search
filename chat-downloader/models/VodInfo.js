@@ -67,6 +67,10 @@ const VodInfoSchema = new Schema({
     enum: ["waiting", "error", "downloading", "downloaded"],
     default: "waiting",
   },
+  downloadProgress: {
+    type: String,
+    default: "0%",
+  },
 });
 
 const VodInfo = mongoose.model("VodInfo", VodInfoSchema);

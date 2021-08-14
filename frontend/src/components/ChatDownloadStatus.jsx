@@ -12,7 +12,7 @@ function ChatDownloadStatus({ vodId, onDone }) {
   };
 
   const startPolling = () => {
-    intervalRef.current = setInterval(poll, 1500);
+    intervalRef.current = setInterval(poll, 1000);
   };
 
   const startChatDownload = async () => {
@@ -37,7 +37,12 @@ function ChatDownloadStatus({ vodId, onDone }) {
     }
   }, [vodInfo, onDone]);
 
-  return <div className="bg-surface">{vodInfo?.chatStatus}</div>;
+  return (
+    <div className="bg-surface">
+      {vodInfo?.chatStatus}{" "}
+      {vodInfo?.chatStatus === "downloading" && vodInfo.downloadProgress}
+    </div>
+  );
 }
 
 export default ChatDownloadStatus;
