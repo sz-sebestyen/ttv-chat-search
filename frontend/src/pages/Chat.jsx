@@ -10,6 +10,7 @@ function Chat() {
   const { id, term } = useParams();
   const [searchResults, setSearchResults] = useState([]);
   const canvasRef = useRef(null);
+  const commentListRef = useRef(null);
 
   const [vodInfo, vodInfoError] = useVodInfo(id);
 
@@ -26,21 +27,47 @@ function Chat() {
 
   const canvas_height = 20;
 
+  const updateCanvas = () => {
+    // draw all
+    const vodLength = getSecondsFromDuration(vodInfo.duration);
+
+    const ctx = canvasRef.current.getContext("2d");
+    ctx.clearRect(0, 0, canvas_width, canvas_height);
+    ctx.fillStyle = "rgba(200, 187, 0, 0.50)";
+
+    const normalizedOffets = searchResults.map(
+      (comment) => comment.content_offset_seconds / vodLength
+    );
+
+    normalizedOffets.forEach((offset) => {
+      ctx.fillRect(canvas_width * offset, 0, 1, canvas_height);
+    });
+
+    // draw visible
+    const listBox = commentListRef.current.getBoundingClientRect();
+
+    const visibles = Array.from(commentListRef.current.children).filter((e) => {
+      const box = e.getBoundingClientRect();
+      return listBox.y < box.y && listBox.bottom > box.bottom;
+    });
+
+    const ogIds = visibles.map((e) => e.id.match(/_(?<id>.+)/).groups.id);
+
+    const normalizedVisiblesOffsets = ogIds.map(
+      (ogId) =>
+        searchResults.find((result) => result.original_id === ogId)
+          .content_offset_seconds / vodLength
+    );
+
+    normalizedVisiblesOffsets.forEach((offset) => {
+      ctx.fillStyle = "#c81e00c7";
+      ctx.fillRect(canvas_width * offset, 0, 1, canvas_height);
+    });
+  };
+
   useEffect(() => {
     if (vodInfo) {
-      const vodLength = getSecondsFromDuration(vodInfo.duration);
-
-      const ctx = canvasRef.current.getContext("2d");
-      ctx.clearRect(0, 0, canvas_width, canvas_height);
-      ctx.fillStyle = "rgba(200, 187, 0, 0.50)";
-
-      const normalizedOffets = searchResults.map(
-        (comment) => comment.content_offset_seconds / vodLength
-      );
-
-      normalizedOffets.forEach((offset) => {
-        ctx.fillRect(canvas_width * offset, 0, 1, canvas_height);
-      });
+      updateCanvas();
     }
   }, [vodInfo, searchResults]); // eslint-disable-line
 
@@ -56,7 +83,7 @@ function Chat() {
     );
 
     document
-      .getElementById(`_${closest.content_offset_seconds}`)
+      .getElementById(`_${closest.original_id}`)
       .scrollIntoView({ behavior: "smooth", block: "end" });
   };
 
@@ -71,11 +98,16 @@ function Chat() {
         onClick={scrollToComment}
       ></canvas>
 
-      <div className="overflow-y-scroll flex-grow" style={{ flexBasis: "0" }}>
+      <div
+        className="overflow-y-scroll flex-grow"
+        style={{ flexBasis: "0" }}
+        onScroll={updateCanvas}
+        ref={commentListRef}
+      >
         {searchResults.map((comment) => (
           <div
             className="text-sm px-4 leading-6"
-            id={`_${comment.content_offset_seconds}`}
+            id={`_${comment.original_id}`}
           >
             <a
               href={getVodLink(id, comment.content_offset_seconds)}
