@@ -1,13 +1,14 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { useParams, useHistory } from "react-router-dom";
-import { InputWithLabel, SearchTerm } from "../components/UI";
-import { ChatDownloadStatus } from "../components";
-
-const backendHost = process.env.REACT_APP_BACKEND_HOST;
+import { InputWithLabel } from "../components/UI";
+import { ChatDownloadStatus, VodInfoPreview } from "../components";
+import { HiArrowLeft } from "react-icons/hi";
+import { useVodInfo } from "../hooks";
 
 function Vod() {
   const { id } = useParams();
   const history = useHistory();
+  const [vodInfo, vodInfoError] = useVodInfo(id);
 
   const [term, setTerm] = useState("");
   const [isDownloaded, setIsDownloaded] = useState(false);
@@ -26,11 +27,17 @@ function Vod() {
 
   const doneHandler = useCallback((chatStatus) => {
     chatStatus === "downloaded" && setIsDownloaded(true);
-    chatStatus === "error" && setIsDownloaded(null);
   }, []);
 
   return (
     <div className="bg-background p-4">
+      <button className="text-xs p-2" title="back" onClick={history.goBack}>
+        <HiArrowLeft />
+      </button>
+
+      {vodInfo && <VodInfoPreview {...{ vodInfo }} />}
+      {vodInfoError && <div>VOD not found</div>}
+
       <ChatDownloadStatus vodId={id} onDone={doneHandler} />
 
       <InputWithLabel
@@ -52,7 +59,10 @@ function Vod() {
         </button>
       )}
 
-      {isDownloaded === null && <div>something went wrong</div>}
+      <div className="text-sm text-center p-2 my-2">
+        While the server is downloading the chat, ready the term that you want
+        to search for.
+      </div>
     </div>
   );
 }
