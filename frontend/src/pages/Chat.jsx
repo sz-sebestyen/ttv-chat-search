@@ -108,6 +108,12 @@ function Chat() {
           <div
             className="text-sm px-4 leading-6"
             id={`_${comment.original_id}`}
+            style={{
+              scrollMargin: `${(() => {
+                const listbox = commentListRef.current?.getBoundingClientRect();
+                return (listbox?.bottom - listbox?.y) / 2;
+              })()}px`,
+            }}
           >
             <a
               href={getVodLink(id, comment.content_offset_seconds)}
