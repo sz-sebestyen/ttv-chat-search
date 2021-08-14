@@ -35,12 +35,23 @@ function ChatDownloadStatus({ vodId, onDone }) {
       clearInterval(intervalRef.current);
       onDone(vodInfo?.chatStatus);
     }
+
+    return () => {
+      clearInterval(intervalRef.current);
+    };
   }, [vodInfo, onDone]);
 
   return (
-    <div className="bg-surface">
-      {vodInfo?.chatStatus}{" "}
-      {vodInfo?.chatStatus === "downloading" && vodInfo.downloadProgress}
+    <div className="text-center p-2 my-2">
+      {vodInfo?.chatStatus === "downloading" && (
+        <div>Chat is downloading: {vodInfo.downloadProgress}</div>
+      )}
+
+      {vodInfo?.chatStatus === "downloaded" && <div>Chat is downloaded</div>}
+
+      {vodInfo?.chatStatus === "waiting" && <div>...</div>}
+
+      {vodInfo?.chatStatus === "error" && <div>Chat download failed</div>}
     </div>
   );
 }
