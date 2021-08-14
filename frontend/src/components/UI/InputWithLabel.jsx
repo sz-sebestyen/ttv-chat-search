@@ -4,7 +4,7 @@ import Input from "./Input";
 const InputWithLabel = forwardRef(
   ({ id, label, invalidMessage = "", ...rest }, ref) => {
     return (
-      <div className="flex flex-col bg-surface rounded px-3 py-2 mx-auto mb-4 max-w-sm">
+      <div className="flex flex-col bg-surface rounded px-3 py-2 mx-auto mb-2 max-w-sm">
         <Input ref={ref} id={id} {...rest} />
 
         <label htmlFor={id} className="text-sm mb-1">

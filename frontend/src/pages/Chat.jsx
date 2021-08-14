@@ -95,7 +95,7 @@ function Chat() {
 
   return (
     <div className="bg-background flex-auto flex flex-col">
-      <div className="flex bg-surface">
+      <div className="flex bg-surface py-2">
         <button
           className="text-xs px-4"
           onClick={history.goBack}
@@ -111,7 +111,7 @@ function Chat() {
         id="canvas"
         height={canvas_height}
         width={canvas_width}
-        className="w-full flex-0 border-b-4 border-b-surface"
+        className="w-full flex-0 border-b-4 border-b-surface cursor-pointer"
         onClick={scrollToComment}
       ></canvas>
 
@@ -125,6 +125,7 @@ function Chat() {
           <ChatComment
             vodId={id}
             comment={comment}
+            key={comment._id}
             style={{
               scrollMargin: `${(() => {
                 const listbox = commentListRef.current?.getBoundingClientRect();

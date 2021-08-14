@@ -46,9 +46,13 @@ function Home() {
         onChange={storeInput}
         spellCheck="false"
         placeholder="https://www.twitch.tv/videos/0000000000"
-        label="VOD link/id:"
-        invalidMessage="Must be either the link or the id of the vod."
+        label="VOD url/id:"
+        invalidMessage="Must be either the url or the id of the vod."
       />
+
+      <div className="text-sm text-center p-2 my-2">
+        Submit the id or the url of the VOD.
+      </div>
 
       {vodInfo && <VodInfoPreview {...{ vodInfo }} />}
 
