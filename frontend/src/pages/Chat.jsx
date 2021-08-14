@@ -3,11 +3,13 @@ import { useParams, useHistory } from "react-router-dom";
 import { useVodInfo } from "../hooks";
 import getSecondsFromDuration from "../getSecondsFromDuration";
 import { ChatComment } from "../components/UI";
+import { HiOutlineSearch } from "react-icons/hi";
 
 const backendHost = process.env.REACT_APP_BACKEND_HOST;
 
 function Chat() {
   const { id, term } = useParams();
+  const history = useHistory();
   const [searchResults, setSearchResults] = useState([]);
   const canvasRef = useRef(null);
   const commentListRef = useRef(null);
@@ -93,7 +95,17 @@ function Chat() {
 
   return (
     <div className="bg-background flex-auto flex flex-col">
-      <h2 className="text-xl py-2 px-4 bg-surface">Search term: {term}</h2>
+      <div className="flex bg-surface">
+        <button
+          className="text-xs px-4"
+          onClick={history.goBack}
+          title="New search"
+        >
+          <HiOutlineSearch />
+        </button>
+        <h2 className="text-xl py-2 flex-1">Search term: {term}</h2>
+      </div>
+
       <canvas
         ref={canvasRef}
         id="canvas"
