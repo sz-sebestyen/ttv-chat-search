@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { useVodInfo } from "../hooks";
 import getSecondsFromDuration from "../getSecondsFromDuration";
-import getVodLink from "../getVodLink";
+import { ChatComment } from "../components/UI";
 
 const backendHost = process.env.REACT_APP_BACKEND_HOST;
 
@@ -24,45 +24,49 @@ function Chat() {
   }, []); // eslint-disable-line
 
   const canvas_width = window.screen.width;
-
   const canvas_height = 20;
 
-  const updateCanvas = () => {
-    // draw all
-    const vodLength = getSecondsFromDuration(vodInfo.duration);
-
+  const clearCanvas = () => {
     const ctx = canvasRef.current.getContext("2d");
     ctx.clearRect(0, 0, canvas_width, canvas_height);
-    ctx.fillStyle = "rgba(200, 187, 0, 0.50)";
+  };
 
+  const drawOnCanvas = (offsets, color) => {
+    const ctx = canvasRef.current.getContext("2d");
+
+    offsets.forEach((offset) => {
+      ctx.fillStyle = color;
+      ctx.fillRect(canvas_width * offset, 0, 1, canvas_height);
+    });
+  };
+
+  const updateCanvas = () => {
+    const vodLength = getSecondsFromDuration(vodInfo.duration);
+
+    clearCanvas();
+
+    // draw all
     const normalizedOffets = searchResults.map(
       (comment) => comment.content_offset_seconds / vodLength
     );
 
-    normalizedOffets.forEach((offset) => {
-      ctx.fillRect(canvas_width * offset, 0, 1, canvas_height);
-    });
+    drawOnCanvas(normalizedOffets, "rgba(200, 187, 0, 0.50)");
 
     // draw visible
     const listBox = commentListRef.current.getBoundingClientRect();
 
-    const visibles = Array.from(commentListRef.current.children).filter((e) => {
-      const box = e.getBoundingClientRect();
-      return listBox.y < box.y && listBox.bottom > box.bottom;
-    });
-
-    const ogIds = visibles.map((e) => e.id.match(/_(?<id>.+)/).groups.id);
-
-    const normalizedVisiblesOffsets = ogIds.map(
-      (ogId) =>
-        searchResults.find((result) => result.original_id === ogId)
-          .content_offset_seconds / vodLength
+    const visibleComments = Array.from(commentListRef.current.children).filter(
+      (child) => {
+        const box = child.getBoundingClientRect();
+        return listBox.y < box.y && listBox.bottom > box.bottom;
+      }
     );
 
-    normalizedVisiblesOffsets.forEach((offset) => {
-      ctx.fillStyle = "#c81e00c7";
-      ctx.fillRect(canvas_width * offset, 0, 1, canvas_height);
-    });
+    const normalizedVisibleOffsets = visibleComments.map(
+      (comment) => parseFloat(comment.dataset.offsetseconds) / vodLength
+    );
+
+    drawOnCanvas(normalizedVisibleOffsets, "#c81e00c7");
   };
 
   useEffect(() => {
@@ -105,34 +109,16 @@ function Chat() {
         ref={commentListRef}
       >
         {searchResults.map((comment) => (
-          <div
-            className="text-sm px-4 leading-6"
-            id={`_${comment.original_id}`}
+          <ChatComment
+            vodId={id}
+            comment={comment}
             style={{
               scrollMargin: `${(() => {
                 const listbox = commentListRef.current?.getBoundingClientRect();
-                return (listbox?.bottom - listbox?.y) / 2;
+                return Math.floor((listbox?.bottom - listbox?.y) / 2);
               })()}px`,
             }}
-          >
-            <a
-              href={getVodLink(id, comment.content_offset_seconds)}
-              target="_blank"
-              rel="noreferrer"
-              className="text-gray-600 underline visited:text-gray-400"
-            >
-              {new Date(comment.created_at)
-                .toLocaleTimeString()
-                .replace(/\s(AM|PM)/, "")}
-            </a>{" "}
-            <span
-              className="font-semibold"
-              style={{ color: comment.message.user_color }}
-            >
-              {comment.commenter.display_name}
-            </span>
-            <span className=" font-light">: {comment.message.body}</span>
-          </div>
+          />
         ))}
       </div>
     </div>
