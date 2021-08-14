@@ -92,18 +92,19 @@ function Chat() {
   };
 
   return (
-    <div className="bg-background py-4 flex-auto flex flex-col">
+    <div className="bg-background flex-auto flex flex-col">
+      <h2 className="text-xl py-2 px-4 bg-surface">Search term: {term}</h2>
       <canvas
         ref={canvasRef}
         id="canvas"
         height={canvas_height}
         width={canvas_width}
-        className="w-full flex-0"
+        className="w-full flex-0 border-b-4 border-b-surface"
         onClick={scrollToComment}
       ></canvas>
 
       <div
-        className="overflow-y-scroll flex-grow"
+        className="overflow-y-scroll flex-grow py-2"
         style={{ flexBasis: "0" }}
         onScroll={updateCanvas}
         ref={commentListRef}
