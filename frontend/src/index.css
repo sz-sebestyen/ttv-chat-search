@@ -703,6 +703,10 @@ video {
   justify-content: space-between;
 }
 
+.gap-4 {
+  gap: 1rem;
+}
+
 .place-self-start {
   place-self: start;
 }
@@ -725,8 +729,17 @@ video {
   border-radius: 0.25rem;
 }
 
+.border {
+  border-width: 1px;
+}
+
 .border-b-4 {
   border-bottom-width: 4px;
+}
+
+.border-surface {
+  --tw-border-opacity: 1;
+  border-color: rgba(31, 31, 31, var(--tw-border-opacity));
 }
 
 .border-b-surface {
@@ -942,5 +955,13 @@ video {
 
   .md\:hidden {
     display: none;
+  }
+
+  .md\:flex-row {
+    flex-direction: row;
+  }
+
+  .md\:gap-4 {
+    gap: 1rem;
   }
 }
