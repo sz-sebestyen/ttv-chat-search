@@ -1,3 +1,4 @@
 import useVodInfo from "./useVodInfo";
+import useUserContext from "./useUserContext";
 
-export { useVodInfo };
+export { useVodInfo, useUserContext };

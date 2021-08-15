@@ -1,13 +1,15 @@
 import { Router } from "./pages";
-import { IconTheme } from "./components";
+import { IconTheme, UserContextProvider } from "./components";
 
 function App() {
   return (
-    <div className="App bg-black text-gray-200 pt-2 h-screen flex flex-col">
-      <IconTheme>
-        <Router />
-      </IconTheme>
-    </div>
+    <UserContextProvider>
+      <div className="App bg-black text-gray-200 pt-2 h-screen flex flex-col">
+        <IconTheme>
+          <Router />
+        </IconTheme>
+      </div>
+    </UserContextProvider>
   );
 }
 
