@@ -3,6 +3,7 @@ import NotFound from "./NotFound";
 import Home from "./Home";
 import Vod from "./Vod";
 import Chat from "./Chat";
+import Login from "./Login";
 import { NavBar } from "../components";
 
 const Router = () => (
@@ -10,6 +11,10 @@ const Router = () => (
     <NavBar />
 
     <Switch>
+      <Route exact path="/login">
+        <Login />
+      </Route>
+
       <Route exact path="/vod/:id">
         <Vod />
       </Route>
