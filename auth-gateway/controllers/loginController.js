@@ -1,17 +1,16 @@
-const { CLIENT_ID, REDIRECT_URI } = process.env;
+const { TWITCH_CLIENT_ID, TWITCH_REDIRECT_URI } = process.env;
 
 const query = [
+  `client_id=${TWITCH_CLIENT_ID}`,
+  `redirect_uri=${TWITCH_REDIRECT_URI}`,
   `response_type=code`,
-  `client_id=${CLIENT_ID}`,
-  `scope=openid%20email`,
-  `redirect_uri=${REDIRECT_URI}`,
-  `prompt=select_account`,
+  `scope=openid`,
 ].join("&");
 
-const googleUrl = `https://accounts.google.com/o/oauth2/v2/auth?${query}`;
+const twitchOAuthUrl = `https://id.twitch.tv/oauth2/authorize?${query}`;
 
 const loginController = async (req, res, next) => {
-  res.redirect(googleUrl);
+  res.redirect(twitchOAuthUrl);
 };
 
 module.exports = loginController;

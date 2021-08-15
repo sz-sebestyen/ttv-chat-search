@@ -1,37 +1,37 @@
 const fetch = require("node-fetch");
 const jwt = require("jsonwebtoken");
 
-const { CLIENT_ID, REDIRECT_URI, CLIENT_SECRET, JWT_SECRET } = process.env;
+const {
+  TWITCH_CLIENT_ID,
+  TWITCH_REDIRECT_URI,
+  TWITCH_CLIENT_SECRET,
+  JWT_SECRET,
+} = process.env;
 
 const codeController = async (req, res, next) => {
   const { code } = req.query;
 
-  console.log("code:", code);
-
   const query = [
+    `client_id=${TWITCH_CLIENT_ID}`,
+    `client_secret=${TWITCH_CLIENT_SECRET}`,
     `code=${code}`,
-    `client_id=${CLIENT_ID}`,
-    `client_secret=${CLIENT_SECRET}`,
-    `scope=openid%20email`,
-    `redirect_uri=${REDIRECT_URI}`,
     `grant_type=authorization_code`,
+    `redirect_uri=${TWITCH_REDIRECT_URI}`,
   ].join("&");
 
-  const googleUrl = `https://oauth2.googleapis.com/token?${query}`;
-
-  const response = await fetch(googleUrl, {
+  const codeRes = await fetch(`https://id.twitch.tv/oauth2/token?${query}`, {
     method: "POST",
   });
 
-  const json = await response.json();
+  const codeResObj = await codeRes.json();
 
-  console.log("tokens:", json);
+  // TODO: verify issuer
 
-  const decoded = jwt.decode(json.id_token);
+  const decoded = jwt.decode(codeResObj.id_token);
 
-  console.log("decoded:", decoded);
+  const { preferred_username, sub } = decoded;
 
-  const token = jwt.sign({ sub: decoded.sub }, JWT_SECRET);
+  const token = jwt.sign({ preferred_username, sub }, JWT_SECRET);
 
   res.json({ token });
 };

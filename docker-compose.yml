@@ -36,6 +36,10 @@ services:
       - BACKEND_HOST
       - PORT=$AUTH_GATEWAY_PORT
       - FRONTEND_HOST
+      - TWITCH_REDIRECT_URI
+      - TWITCH_CLIENT_SECRET
+      - TWITCH_CLIENT_ID
+      - JWT_SECRET
     ports:
       - $AUTH_GATEWAY_PORT:$AUTH_GATEWAY_PORT
     networks:
