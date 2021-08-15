@@ -22,6 +22,27 @@ services:
     volumes:
       - ./backend:/app/
 
+  auth-gateway:
+    build:
+      context: ./auth-gateway
+      args:
+        WORKDIR: /app
+    image: szsebestyen/ttv-chat-search-auth-gateway
+    depends_on:
+      - mongo
+      - backend
+    environment:
+      - DB_CONNECTION
+      - BACKEND_HOST
+      - PORT=$AUTH_GATEWAY_PORT
+      - FRONTEND_HOST
+    ports:
+      - $AUTH_GATEWAY_PORT:$AUTH_GATEWAY_PORT
+    networks:
+      - the-network
+    volumes:
+      - ./auth-gateway:/app/
+
   chat-downloader:
     build:
       context: ./chat-downloader
@@ -49,7 +70,7 @@ services:
       dockerfile: Dockerfile.dev
     image: szsebestyen/ttv-chat-search-frontend
     depends_on:
-      - backend
+      - auth-gateway
     environment:
       - REACT_APP_BACKEND_HOST
     ports:
