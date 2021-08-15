@@ -12,7 +12,11 @@ const getTimeStamp = (content_offset_seconds) => {
   const minutes = Math.floor(secondsLeft / secondsInAMinute);
   secondsLeft -= minutes * secondsInAMinute;
 
-  return `${hours}h${minutes}m${secondsLeft}s`;
+  const parts = [`${hours}h`, `${minutes}m`, `${secondsLeft}s`].map((part) =>
+    part.padStart(3, "0")
+  );
+
+  return parts.join("");
 };
 
 export default getTimeStamp;

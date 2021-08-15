@@ -1,5 +1,6 @@
 import React from "react";
 import getVodLink from "../../getVodLink";
+import getTimeStamp from "../../getTimeStamp";
 
 function ChatComment({ comment, vodId, style }) {
   return (
@@ -13,11 +14,9 @@ function ChatComment({ comment, vodId, style }) {
         href={getVodLink(vodId, comment.content_offset_seconds)}
         target="_blank"
         rel="noreferrer"
-        className="text-gray-600 underline visited:text-gray-400"
+        className="text-gray-600 underline visited:text-gray-400 text-xs"
       >
-        {new Date(comment.created_at)
-          .toLocaleTimeString()
-          .replace(/\s(AM|PM)/, "")}
+        {getTimeStamp(comment.content_offset_seconds)}
       </a>{" "}
       <span
         className="font-semibold"
