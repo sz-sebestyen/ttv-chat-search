@@ -26,7 +26,7 @@ const setChatStatus = async (id, chatStatus) => {
 };
 
 const markDownloaded = async (id) => {
-  setChatStatus(vodInfo.id, "downloaded");
+  setChatStatus(id, "downloaded");
 
   await VodInfo.updateOne({ id }, { downloadProgress: "100%" });
 };
