@@ -25,6 +25,12 @@ const setChatStatus = async (id, chatStatus) => {
   await VodInfo.updateOne({ id }, { chatStatus });
 };
 
+const markDownloaded = async (id) => {
+  setChatStatus(vodInfo.id, "downloaded");
+
+  await VodInfo.updateOne({ id }, { downloadProgress: "100%" });
+};
+
 class Chat {
   constructor(vodInfo, numberOfThreads) {
     const vodLength = getSecondsFromDuration(vodInfo.duration);
@@ -41,7 +47,7 @@ class Chat {
 
         await Promise.all(chatPieces.map((chatPiece) => chatPiece.download()));
 
-        setChatStatus(vodInfo.id, "downloaded");
+        markDownloaded(vodInfo.id);
 
         console.log("chat download finished of vod: ", vodInfo.id);
       } catch (error) {
