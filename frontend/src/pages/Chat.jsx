@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams, useHistory } from "react-router-dom";
-import { useVodInfo } from "../hooks";
-import getSecondsFromDuration from "../getSecondsFromDuration";
-import { ChatComment } from "../components/UI";
 import { HiOutlineSearch } from "react-icons/hi";
-
-const backendHost = process.env.REACT_APP_BACKEND_HOST;
+import { ChatComment } from "../components/UI";
+import { useVodInfo, useApi } from "../hooks";
+import getSecondsFromDuration from "../getSecondsFromDuration";
 
 function Chat() {
   const { id, term } = useParams();
@@ -14,11 +12,12 @@ function Chat() {
   const canvasRef = useRef(null);
   const commentListRef = useRef(null);
 
-  const [vodInfo, vodInfoError] = useVodInfo(id);
+  const api = useApi();
+
+  const [vodInfo] = useVodInfo(id);
 
   const search = async () => {
-    const res = await fetch(`${backendHost}/vod/${id}/chat?search=${term}`);
-    setSearchResults(await res.json());
+    setSearchResults(await api.searchInChat(id, term));
   };
 
   useEffect(() => {

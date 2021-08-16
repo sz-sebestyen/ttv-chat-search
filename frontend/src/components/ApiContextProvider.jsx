@@ -43,7 +43,12 @@ function ApiContextProvider({ children }) {
 
   const searchInChat = async (vodId, term) => {
     const res = await request(`/vod/${vodId}/chat?search=${term}`);
-    return res.json();
+
+    if (res.status === 200) {
+      return res.json();
+    } else {
+      return [];
+    }
   };
 
   const signIn = async (code) => {

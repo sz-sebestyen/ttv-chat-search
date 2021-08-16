@@ -8,6 +8,7 @@ function ChatDownloadStatus({ vodId, onDone }) {
 
   const poll = async () => {
     const res = await fetch(`${backendHost}/vod/${vodId}`);
+
     setVodInfo(await res.json());
   };
 
@@ -28,6 +29,11 @@ function ChatDownloadStatus({ vodId, onDone }) {
 
   useEffect(() => {
     startChatDownload();
+
+    return () => {
+      console.log("stop polling");
+      clearInterval(intervalRef.current);
+    };
   }, []); // eslint-disable-line
 
   useEffect(() => {
@@ -35,11 +41,7 @@ function ChatDownloadStatus({ vodId, onDone }) {
       clearInterval(intervalRef.current);
       onDone(vodInfo?.chatStatus);
     }
-
-    return () => {
-      clearInterval(intervalRef.current);
-    };
-  }, [vodInfo, onDone]);
+  }, [vodInfo]);
 
   return (
     <div className="text-center p-2 my-2">
