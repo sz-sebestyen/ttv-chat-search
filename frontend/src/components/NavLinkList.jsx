@@ -12,7 +12,9 @@ function NavLinkList() {
       {userContext.user ? (
         <>
           <ListItem>
-            <span>{userContext.user.preferred_username}</span>
+            <span className="text-gray-600">
+              {userContext.user.preferred_username}
+            </span>
           </ListItem>
           <ListItem>
             <Link to="/search-history">Search history</Link>
