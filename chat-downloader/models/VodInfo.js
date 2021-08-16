@@ -73,6 +73,10 @@ const VodInfoSchema = new Schema({
   },
 });
 
+VodInfoSchema.index({
+  id: 1,
+});
+
 const VodInfo = mongoose.model("VodInfo", VodInfoSchema);
 
 module.exports = VodInfo;
