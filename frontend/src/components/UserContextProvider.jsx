@@ -22,8 +22,11 @@ function UserContextProvider({ children }) {
   };
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+
     // TODO: check that token is still valid
-    setUser(jwt_decode(localStorage.getItem("token")));
+
+    token && setUser(jwt_decode());
   }, []);
 
   return (
