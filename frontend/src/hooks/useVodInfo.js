@@ -1,28 +1,21 @@
 import { useState, useEffect } from "react";
-
-const SUCCESS = 200;
-
-const backendHost = process.env.REACT_APP_BACKEND_HOST;
+import useApi from "./useApi";
 
 const useVodInfo = (vodId) => {
   const [vodInfo, setVodInfo] = useState();
   const [error, setError] = useState();
 
+  const api = useApi();
+
   const getVodInfo = async () => {
-    try {
-      const res = await fetch(`${backendHost}/vod/${vodId}`);
+    const res = await api.getVodInfo(vodId);
 
-      if (res.status === SUCCESS) {
-        const parsed = await res.json();
+    setVodInfo(res);
 
-        setVodInfo(parsed);
-        setError();
-      } else {
-        setVodInfo();
-        setError(Error("Vod not found"));
-      }
-    } catch (err) {
-      setError(err);
+    if (res) {
+      setError();
+    } else {
+      setError(Error("Vod not found"));
     }
   };
 

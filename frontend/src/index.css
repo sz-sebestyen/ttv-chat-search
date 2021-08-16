@@ -703,10 +703,6 @@ video {
   justify-content: space-between;
 }
 
-.gap-4 {
-  gap: 1rem;
-}
-
 .place-self-start {
   place-self: start;
 }
@@ -729,17 +725,8 @@ video {
   border-radius: 0.25rem;
 }
 
-.border {
-  border-width: 1px;
-}
-
 .border-b-4 {
   border-bottom-width: 4px;
-}
-
-.border-surface {
-  --tw-border-opacity: 1;
-  border-color: rgba(31, 31, 31, var(--tw-border-opacity));
 }
 
 .border-b-surface {
@@ -936,12 +923,6 @@ video {
 
 .peer:invalid ~ .peer-invalid\:before\:content-\[attr\(data-content\)\]::before {
   content: attr(data-content);
-}
-
-@media (min-width: 640px) {
-  .sm\:hidden {
-    display: none;
-  }
 }
 
 @media (min-width: 768px) {

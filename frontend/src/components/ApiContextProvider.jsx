@@ -30,6 +30,8 @@ function ApiContextProvider({ children }) {
 
     if (res.status === 200) {
       return res.json();
+    } else {
+      return null;
     }
   };
 
