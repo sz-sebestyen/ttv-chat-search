@@ -4,13 +4,20 @@ import Home from "./Home";
 import Vod from "./Vod";
 import Chat from "./Chat";
 import Login from "./Login";
-import { NavBar } from "../components";
+import SearchHistory from "./SearchHistory";
+import { NavBar, AuthShield } from "../components";
 
 const Router = () => (
   <BrowserRouter>
     <NavBar />
 
     <Switch>
+      <Route exact path="/search-history">
+        <AuthShield>
+          <SearchHistory />
+        </AuthShield>
+      </Route>
+
       <Route exact path="/login">
         <Login />
       </Route>

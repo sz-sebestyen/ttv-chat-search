@@ -5,6 +5,7 @@ import Menu from "./Menu";
 import ChatDownloadStatus from "./ChatDownloadStatus";
 import UserContextProvider from "./UserContextProvider";
 import ApiContextProvider from "./ApiContextProvider";
+import AuthShield from "./AuthShield";
 
 export {
   IconTheme,
@@ -14,4 +15,5 @@ export {
   ChatDownloadStatus,
   UserContextProvider,
   ApiContextProvider,
+  AuthShield,
 };
