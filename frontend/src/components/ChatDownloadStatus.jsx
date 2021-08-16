@@ -1,15 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
-
-const backendHost = process.env.REACT_APP_BACKEND_HOST;
+import { useApi } from "../hooks";
 
 function ChatDownloadStatus({ vodId, onDone }) {
   const [vodInfo, setVodInfo] = useState({ chatStatus: "waiting" });
   const intervalRef = useRef(null);
 
-  const poll = async () => {
-    const res = await fetch(`${backendHost}/vod/${vodId}`);
+  const api = useApi();
 
-    setVodInfo(await res.json());
+  const poll = async () => {
+    const freshVodInfo = await api.getVodInfo(vodId);
+
+    setVodInfo(freshVodInfo);
   };
 
   const startPolling = () => {
@@ -17,10 +18,7 @@ function ChatDownloadStatus({ vodId, onDone }) {
   };
 
   const startChatDownload = async () => {
-    await fetch(`${backendHost}/vod/${vodId}/chat`, {
-      method: "POST",
-      headers: { Accept: "application/json" },
-    });
+    await api.downloadChat(vodId);
     startPolling();
   };
 
@@ -41,7 +39,7 @@ function ChatDownloadStatus({ vodId, onDone }) {
       clearInterval(intervalRef.current);
       onDone(vodInfo?.chatStatus);
     }
-  }, [vodInfo]);
+  }, [vodInfo]); // eslint-disable-line
 
   return (
     <div className="text-center p-2 my-2">
