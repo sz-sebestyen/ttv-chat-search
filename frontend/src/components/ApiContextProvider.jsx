@@ -1,7 +1,6 @@
 import { ApiContext } from "../contexts";
 import { Redirect } from "react-router-dom";
 import { useState } from "react";
-import jwt_decode from "jwt-decode";
 
 const backendHost = process.env.REACT_APP_BACKEND_HOST;
 
@@ -56,20 +55,15 @@ function ApiContextProvider({ children }) {
       method: "POST",
       headers: { Accept: "application/json" },
     });
-    const { token } = await res.json();
 
-    localStorage.setItem("token", token);
-
-    return jwt_decode(token);
+    return res.json();
   };
-
-  const signOut = () => localStorage.removeItem("token");
 
   if (shouldSignIn) return <Redirect to="/login" />;
 
   return (
     <ApiContext.Provider
-      value={{ signOut, signIn, searchInChat, downloadChat, getVodInfo }}
+      value={{ signIn, searchInChat, downloadChat, getVodInfo }}
     >
       {children}
     </ApiContext.Provider>
