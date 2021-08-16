@@ -27,7 +27,7 @@ function NavBar() {
       </div>
 
       {isOpen && (
-        <div className="md:hidden">
+        <div className="md:hidden border-b border-b-surface border-t border-t-surface mb-2">
           <NavLinkList />
         </div>
       )}

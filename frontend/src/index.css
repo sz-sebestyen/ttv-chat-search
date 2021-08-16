@@ -729,9 +729,26 @@ video {
   border-bottom-width: 4px;
 }
 
+.border-b-2 {
+  border-bottom-width: 2px;
+}
+
+.border-b {
+  border-bottom-width: 1px;
+}
+
+.border-t {
+  border-top-width: 1px;
+}
+
 .border-b-surface {
   --tw-border-opacity: 1;
   border-bottom-color: rgba(31, 31, 31, var(--tw-border-opacity));
+}
+
+.border-t-surface {
+  --tw-border-opacity: 1;
+  border-top-color: rgba(31, 31, 31, var(--tw-border-opacity));
 }
 
 .bg-black {
