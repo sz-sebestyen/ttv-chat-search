@@ -26,7 +26,7 @@ function UserContextProvider({ children }) {
 
     // TODO: check that token is still valid
 
-    token && setUser(jwt_decode());
+    token && setUser(jwt_decode(token));
   }, []);
 
   return (
