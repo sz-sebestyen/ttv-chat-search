@@ -1,7 +1,9 @@
 const jwt = require("jsonwebtoken");
 
-const identifyUser = (req, res, next) => {
+const identifyUser = async (req, res, next) => {
   const { JWT_SECRET } = process.env;
+
+  console.log(req.headers.authorization, req.headers.Authorization);
 
   const match = (req.headers.authorization || "").match(
     /^Bearer\s(?<jwt>.+)$/i
@@ -9,13 +11,15 @@ const identifyUser = (req, res, next) => {
 
   if (!match) return next();
 
-  jwt.verify(match.groups.jwt, JWT_SECRET, (err, decoded) => {
-    if (!err) {
-      res.locals.userId = decoded?.sub;
-    }
+  try {
+    const decoded = await jwt.verify(match.groups.jwt, JWT_SECRET);
 
-    next();
-  });
+    console.log("decoded", decoded);
+
+    res.locals.userId = decoded?.sub;
+  } catch (error) {}
+
+  next();
 };
 
 module.exports = identifyUser;

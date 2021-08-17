@@ -13,7 +13,11 @@ function UserContextProvider({ children }) {
 
     localStorage.setItem("token", token);
 
-    setUser(jwt_decode(token));
+    try {
+      setUser(jwt_decode(token));
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const signOut = () => {
@@ -26,7 +30,13 @@ function UserContextProvider({ children }) {
 
     // TODO: check that token is still valid
 
-    token && setUser(jwt_decode(token));
+    try {
+      token && setUser(jwt_decode(token));
+    } catch (error) {
+      console.log("bad token:", token);
+      console.error(error);
+      localStorage.removeItem("token");
+    }
   }, []);
 
   return (

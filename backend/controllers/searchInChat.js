@@ -2,9 +2,9 @@ const searchMessages = require("../services/searchMessages");
 
 const searchInChat = async (req, res, next) => {
   const { id } = req.params;
-  const { search } = req.query;
+  const { term } = req.query;
 
-  const messages = await searchMessages(id, search);
+  const messages = await searchMessages(id, term);
 
   res.json(messages);
 };

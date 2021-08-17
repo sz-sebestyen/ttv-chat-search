@@ -11,6 +11,7 @@ proxy.on("error", function (e) {
 proxy.on("proxyReq", function (proxyReq, req, res, options) {
   proxyReq.removeHeader("X-user_id");
 
+  console.log("reslocals:", res.locals);
   const { userId } = res.locals;
 
   userId && proxyReq.setHeader("X-user_id", userId);

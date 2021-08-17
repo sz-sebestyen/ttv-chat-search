@@ -17,7 +17,8 @@ function Chat() {
   const [vodInfo] = useVodInfo(id);
 
   const search = async () => {
-    setSearchResults(await api.searchInChat(id, term));
+    const freshSearchResults = await api.searchInChat(id, term);
+    setSearchResults(freshSearchResults);
   };
 
   useEffect(() => {

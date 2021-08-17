@@ -1,17 +1,15 @@
-import { Redirect } from "react-router-dom";
 import { useUserContext } from "../hooks";
 
 function AuthShield({ children, reversed }) {
   const { user } = useUserContext();
 
-  const shouldRedirectAuthorizedUser = reversed && user;
-  const shouldRedirectUnauthorizedUser = !reversed && !user;
+  const shouldProtectFromAuthorizedUser = reversed && user;
+  const shouldProtectFromUnauthorizedUser = !reversed && !user;
 
-  if (shouldRedirectAuthorizedUser || shouldRedirectUnauthorizedUser) {
-    return <Redirect to="/" />;
-  }
+  const isUnauthorized =
+    shouldProtectFromAuthorizedUser || shouldProtectFromUnauthorizedUser;
 
-  return <>{children}</>;
+  return <>{isUnauthorized ? <div>Please sign in</div> : <>{children}</>}</>;
 }
 
 export default AuthShield;
