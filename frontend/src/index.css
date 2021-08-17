@@ -619,6 +619,11 @@ video {
   margin-right: auto;
 }
 
+.my-4 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
 .mb-2 {
   margin-bottom: 0.5rem;
 }
@@ -725,6 +730,10 @@ video {
   border-radius: 0.25rem;
 }
 
+.border {
+  border-width: 1px;
+}
+
 .border-b {
   border-bottom-width: 1px;
 }
@@ -735,6 +744,11 @@ video {
 
 .border-b-4 {
   border-bottom-width: 4px;
+}
+
+.border-surface {
+  --tw-border-opacity: 1;
+  border-color: rgba(31, 31, 31, var(--tw-border-opacity));
 }
 
 .border-b-surface {

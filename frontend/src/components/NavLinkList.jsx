@@ -1,12 +1,10 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useUserContext } from "../hooks";
-
-const backendHost = process.env.REACT_APP_BACKEND_HOST;
+import SignInLink from "./SignInLink";
 
 function NavLinkList() {
   const userContext = useUserContext();
-  const location = useLocation();
 
   return (
     <ul className="md:flex md:flex-row md:gap-4 text-center bg-background">
@@ -26,9 +24,7 @@ function NavLinkList() {
         </>
       ) : (
         <ListItem>
-          <a href={`${backendHost}/login?state=${location.pathname}`}>
-            Sign in
-          </a>
+          <SignInLink />
         </ListItem>
       )}
     </ul>
