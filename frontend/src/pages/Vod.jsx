@@ -31,7 +31,11 @@ function Vod() {
 
   return (
     <div className="bg-background p-4">
-      <button className="text-xs p-2" title="back" onClick={history.goBack}>
+      <button
+        className="text-xs p-2 hover:text-violet-400"
+        title="back"
+        onClick={history.goBack}
+      >
         <HiArrowLeft />
       </button>
 

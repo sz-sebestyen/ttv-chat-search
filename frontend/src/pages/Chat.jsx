@@ -107,12 +107,16 @@ function Chat() {
   return (
     <div className="bg-background flex-auto flex flex-col">
       <div className="flex bg-surface py-2">
-        <button className="text-xs px-4" onClick={history.goBack} title="back">
+        <button
+          className="text-xs px-4 hover:text-violet-400"
+          onClick={history.goBack}
+          title="back"
+        >
           <HiArrowLeft />
         </button>
 
         <button
-          className="text-xs px-4"
+          className="text-xs px-4 hover:text-violet-400"
           onClick={() => history.push(`/vod/${id}`)}
           title="New search"
         >

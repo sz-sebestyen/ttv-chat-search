@@ -945,6 +945,11 @@ video {
   --tw-ring-color: rgba(251, 113, 133, var(--tw-ring-opacity));
 }
 
+.hover\:text-violet-400:hover {
+  --tw-text-opacity: 1;
+  color: rgba(167, 139, 250, var(--tw-text-opacity));
+}
+
 .focus\:outline-none:focus {
   outline: 2px solid transparent;
   outline-offset: 2px;

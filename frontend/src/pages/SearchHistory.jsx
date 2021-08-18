@@ -19,7 +19,11 @@ function SearchHistory() {
 
   return (
     <div>
-      <button className="text-xs p-2" title="back" onClick={history.goBack}>
+      <button
+        className="text-xs p-2 hover:text-violet-400"
+        title="back"
+        onClick={history.goBack}
+      >
         <HiArrowLeft />
       </button>
 
