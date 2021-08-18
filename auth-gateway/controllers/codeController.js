@@ -27,7 +27,7 @@ const codeController = async (req, res, next) => {
 
   const { id_token } = await codeRes.json();
 
-  // TODO: verify issuer
+  // TODO: could verify issuer for extra sequrity
 
   if (!id_token) return res.status(401).json({ message: "Unauthorized" });
 
