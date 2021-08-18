@@ -35,4 +35,35 @@ describe("/code", () => {
         .expect(200, { sub });
     });
   });
+
+  describe("when the jwt response doesn't include id_token", () => {
+    it("should return 401", async () => {
+      // given
+
+      fetch.mockImplementation(() =>
+        Promise.resolve({
+          status: 200,
+          json: () => ({}),
+        })
+      );
+
+      // when
+      const response = request
+        .post(`/code?code=asd`)
+        .set("Accept", "application/json");
+
+      // then
+      await response.expect(401);
+    });
+  });
+
+  describe("when the code is missing", () => {
+    it("should return 400", async () => {
+      // when
+      const response = request.post(`/code`).set("Accept", "application/json");
+
+      // then
+      await response.expect(400);
+    });
+  });
 });
