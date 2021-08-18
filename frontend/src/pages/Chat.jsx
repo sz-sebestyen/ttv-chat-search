@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, useHistory } from "react-router-dom";
-import { HiOutlineSearch } from "react-icons/hi";
+import { HiOutlineSearch, HiArrowLeft } from "react-icons/hi";
 import { ChatComment } from "../components/UI";
 import { useVodInfo, useApi } from "../hooks";
 import getSecondsFromDuration from "../getSecondsFromDuration";
@@ -96,13 +96,18 @@ function Chat() {
   return (
     <div className="bg-background flex-auto flex flex-col">
       <div className="flex bg-surface py-2">
+        <button className="text-xs px-4" onClick={history.goBack} title="back">
+          <HiArrowLeft />
+        </button>
+
         <button
           className="text-xs px-4"
-          onClick={history.goBack}
+          onClick={() => history.push(`/vod/${id}`)}
           title="New search"
         >
           <HiOutlineSearch />
         </button>
+
         <h2 className="text-xl py-2 flex-1">Search term: {term}</h2>
       </div>
 
