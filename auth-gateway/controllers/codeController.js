@@ -11,6 +11,8 @@ const {
 const codeController = async (req, res, next) => {
   const { code } = req.query;
 
+  if (!code) return res.status(400).json({ message: "Missing code" });
+
   const query = [
     `client_id=${TWITCH_CLIENT_ID}`,
     `client_secret=${TWITCH_CLIENT_SECRET}`,
@@ -23,11 +25,13 @@ const codeController = async (req, res, next) => {
     method: "POST",
   });
 
-  const codeResObj = await codeRes.json();
+  const { id_token } = await codeRes.json();
 
   // TODO: verify issuer
 
-  const decoded = jwt.decode(codeResObj.id_token);
+  if (!id_token) return res.status(401).json({ message: "Unauthorized" });
+
+  const decoded = jwt.decode(id_token);
 
   const { preferred_username, sub } = decoded;
 
