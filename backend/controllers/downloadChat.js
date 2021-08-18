@@ -8,8 +8,6 @@ const { CHAT_DOWNLOADER_HOST } = process.env;
 const downloadChat = async (req, res, next) => {
   const { id } = req.params;
 
-  // TODO: check user is authenticated, if so, then save the vod request
-
   const chatDownloaderResponse = await fetch(
     `${CHAT_DOWNLOADER_HOST}/vod/${id}/chat`,
     {
