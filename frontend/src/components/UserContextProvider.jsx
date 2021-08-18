@@ -25,19 +25,24 @@ function UserContextProvider({ children }) {
     setUser(null);
   };
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    // TODO: check that token is still valid
+  const checkAuthentication = async (token) => {
+    const isValid = await api.checkAuthentication();
 
     try {
-      token && setUser(jwt_decode(token));
+      isValid && setUser(jwt_decode(token));
     } catch (error) {
       console.log("bad token:", token);
       console.error(error);
+
       localStorage.removeItem("token");
     }
-  }, []);
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    token && checkAuthentication(token);
+  }, []); // eslint-disable-line
 
   return (
     <UserContext.Provider value={{ user, signIn, signOut }}>

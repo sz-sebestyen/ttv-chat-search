@@ -76,6 +76,12 @@ function ApiContextProvider({ children }) {
     return res?.json();
   };
 
+  const checkAuthentication = async () => {
+    const res = await request("/auth-check");
+
+    return res?.json();
+  };
+
   return (
     <ApiContext.Provider
       value={{
@@ -84,6 +90,7 @@ function ApiContextProvider({ children }) {
         downloadChat,
         getVodInfo,
         getSearchHistory,
+        checkAuthentication,
       }}
     >
       {children}
