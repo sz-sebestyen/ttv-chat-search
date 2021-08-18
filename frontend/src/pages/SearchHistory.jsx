@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import { useApi } from "../hooks";
+import { HiArrowLeft } from "react-icons/hi";
 
 function SearchHistory() {
   const api = useApi();
+  const history = useHistory();
   const [searches, setSearches] = useState([]);
 
   const getSearchHistory = async () => {
@@ -16,6 +19,10 @@ function SearchHistory() {
 
   return (
     <div>
+      <button className="text-xs p-2" title="back" onClick={history.goBack}>
+        <HiArrowLeft />
+      </button>
+
       {searches.map((search) => (
         <div className="px-4 py-2 bg-surface my-1 flex">
           <a href={`/vod/${search.vodId}`} className="underline">
