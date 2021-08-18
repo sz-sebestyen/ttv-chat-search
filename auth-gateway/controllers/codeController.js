@@ -31,7 +31,9 @@ const codeController = async (req, res, next) => {
 
   const { preferred_username, sub } = decoded;
 
-  const token = jwt.sign({ preferred_username, sub }, JWT_SECRET);
+  const token = jwt.sign({ preferred_username, sub }, JWT_SECRET, {
+    expiresIn: 15 * 60,
+  });
 
   res.json({ token });
 };
