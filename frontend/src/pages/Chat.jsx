@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { HiOutlineSearch, HiArrowLeft } from "react-icons/hi";
 import { ChatComment } from "../components/UI";
@@ -25,12 +25,23 @@ function Chat() {
     search();
   }, []); // eslint-disable-line
 
-  const canvas_width = window.screen.width;
-  const canvas_height = 20;
+  const [canvasWidth, setCanvasWidth] = useState(window.innerWidth);
+
+  useLayoutEffect(() => {
+    const updateCanvasWidth = () => {
+      setCanvasWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", updateCanvasWidth);
+
+    return () => window.removeEventListener("resize", updateCanvasWidth);
+  }, []);
+
+  const canvasHeight = 20;
 
   const clearCanvas = () => {
     const ctx = canvasRef.current.getContext("2d");
-    ctx.clearRect(0, 0, canvas_width, canvas_height);
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
   };
 
   const drawOnCanvas = (offsets, color) => {
@@ -38,7 +49,7 @@ function Chat() {
 
     offsets.forEach((offset) => {
       ctx.fillStyle = color;
-      ctx.fillRect(canvas_width * offset, 0, 1, canvas_height);
+      ctx.fillRect(canvasWidth * offset, 0, 1, canvasHeight);
     });
   };
 
@@ -114,8 +125,8 @@ function Chat() {
       <canvas
         ref={canvasRef}
         id="canvas"
-        height={canvas_height}
-        width={canvas_width}
+        height={canvasHeight}
+        width={canvasWidth}
         className="w-full flex-0 border-b-4 border-b-surface cursor-pointer"
         onClick={scrollToComment}
       ></canvas>
