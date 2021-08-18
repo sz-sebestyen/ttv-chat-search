@@ -23,8 +23,8 @@ function SearchHistory() {
         <HiArrowLeft />
       </button>
 
-      {searches.map((search) => (
-        <div className="px-4 py-2 bg-surface my-1 flex">
+      {searches.map((search, index) => (
+        <div className="px-4 py-2 bg-surface my-1 flex" key={index}>
           <a href={`/vod/${search.vodId}`} className="underline">
             {search.vodId}
           </a>
