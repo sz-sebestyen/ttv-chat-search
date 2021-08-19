@@ -12,8 +12,6 @@ const { ChatMessage } = require("../../models");
 const supertest = require("supertest");
 const request = supertest(app);
 
-jest.mock("node-fetch", () => jest.fn());
-
 let mongoServer;
 
 beforeAll(async () => {
