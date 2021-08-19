@@ -1,7 +1,7 @@
 const NOT_FOUND = 404;
 
 const vodInfoResponse = async (req, res, next) => {
-  const { vodInfo } = req;
+  const { vodInfo } = res.locals;
 
   if (vodInfo) {
     res.json(vodInfo);
