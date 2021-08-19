@@ -1,4 +1,4 @@
-const searchMessages = require("../services/searchMessages");
+const { searchMessages } = require("../services");
 
 const searchInChat = async (req, res, next) => {
   const { id } = req.params;

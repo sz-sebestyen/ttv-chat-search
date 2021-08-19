@@ -1,4 +1,4 @@
-const ChatMessage = require("../models/ChatMessage");
+const { ChatMessage } = require("../models");
 
 const searchMessages = async (vodId, searchTerm) => {
   return ChatMessage.find({

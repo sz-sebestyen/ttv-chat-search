@@ -1,5 +1,4 @@
-const mongoose = require("mongoose");
-const { Schema } = mongoose;
+const { Schema, model } = require("mongoose");
 
 const CommenterSchema = new Schema({
   original_id: {
@@ -63,6 +62,6 @@ ChatMessageSchema.index({
   "message.body": 1,
 });
 
-const ChatMessage = mongoose.model("ChatMessage", ChatMessageSchema);
+const ChatMessage = model("ChatMessage", ChatMessageSchema);
 
 module.exports = ChatMessage;

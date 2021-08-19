@@ -1,12 +1,14 @@
 const express = require("express");
 require("express-async-errors");
 const app = express();
-const errorHandler = require("./middlewares/errorHandler");
-const saveUserSearchHistory = require("./middlewares/saveUserSearchHistory");
-const downloadChat = require("./controllers/downloadChat");
-const getVodInfo = require("./controllers/getVodInfo");
-const searchInChat = require("./controllers/searchInChat");
-const getUserSearchHistory = require("./controllers/getUserSearchHistory");
+const { errorHandler, saveUserSearchHistory } = require("./middlewares");
+
+const {
+  downloadChat,
+  getVodInfo,
+  searchInChat,
+  getUserSearchHistory,
+} = require("./controllers");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
