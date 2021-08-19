@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node ."
+    "start": "node .",
+    "test": "jest",
+    "test:report": "jest --coverage --verbose"
   },
   "keywords": [],
   "author": "",
@@ -14,5 +16,17 @@
     "express-async-errors": "^3.1.1",
     "mongoose": "^5.13.2",
     "node-fetch": "^2.6.1"
+  },
+  "devDependencies": {
+    "dotenv": "^10.0.0",
+    "jest": "^27.0.6",
+    "mongodb-memory-server": "^7.3.6",
+    "nock": "^13.1.1",
+    "supertest": "^6.1.6"
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "__utils__"
+    ]
   }
 }
