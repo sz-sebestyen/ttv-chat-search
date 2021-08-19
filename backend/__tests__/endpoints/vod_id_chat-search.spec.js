@@ -7,7 +7,7 @@ const {
   dbClearCollections,
 } = require("../__utils__/memoryMongoDB");
 const chatMessageSample = require("../__utils__/chatMessageSample");
-const { ChatMessage } = require("../../models");
+const { ChatMessage, UserSearchHistory } = require("../../models");
 
 const supertest = require("supertest");
 const request = supertest(app);
@@ -23,7 +23,7 @@ afterAll(async () => {
 });
 
 afterEach(async () => {
-  await dbClearCollections([ChatMessage]);
+  await dbClearCollections([ChatMessage, UserSearchHistory]);
 });
 
 describe("POST /vod/:id/chat-search?term=<search-term>", () => {
@@ -40,22 +40,53 @@ describe("POST /vod/:id/chat-search?term=<search-term>", () => {
   });
 
   describe("when the search term is given", () => {
-    it("should return the messages found", async () => {
-      // given
-      const vodId = "123";
-      const searchTerm = "find me";
+    const userId = "user123";
+    const vodId = "123";
+    const searchTerm = "find me";
 
-      chatMessageSample.content_id = vodId;
-      chatMessageSample.message.body = `Filler text 101 ${searchTerm} more filler text`;
-      await new ChatMessage(chatMessageSample).save();
+    chatMessageSample.content_id = vodId;
+    chatMessageSample.message.body = `Filler text 101 ${searchTerm} more filler text`;
 
-      // when
-      const response = await request
-        .post(`/vod/${vodId}/chat-search?term=${searchTerm}`)
-        .set("Accept", "application/json");
+    describe("and missing x-user_id header", () => {
+      it("should return the messages found, but should not save the search in the users search history", async () => {
+        // given
+        await new ChatMessage(chatMessageSample).save();
 
-      // then
-      expect(response.body).toHaveLength(1);
+        // when
+        const response = await request
+          .post(`/vod/${vodId}/chat-search?term=${searchTerm}`)
+          .set("Accept", "application/json");
+
+        // then
+        expect(response.status).toBe(200);
+        expect(response.body).toHaveLength(1);
+
+        const userSearchHistoryCount = await UserSearchHistory.countDocuments(
+          {}
+        );
+        expect(userSearchHistoryCount).toBe(0);
+      });
+    });
+
+    describe("and x-user_id header is present", () => {
+      it("should return the messages found and save the search in the users search history", async () => {
+        // given
+
+        await new ChatMessage(chatMessageSample).save();
+
+        // when
+        const response = await request
+          .post(`/vod/${vodId}/chat-search?term=${searchTerm}`)
+          .set("Accept", "application/json")
+          .set("X-user_id", userId);
+
+        // then
+        expect(response.status).toBe(200);
+        expect(response.body).toHaveLength(1);
+
+        const userSearchHistory = await UserSearchHistory.findOne({ userId });
+        expect(userSearchHistory).toBeTruthy();
+      });
     });
   });
 });
