@@ -4,7 +4,7 @@ const supertest = require("supertest");
 const request = supertest(app);
 const jwt = require("jsonwebtoken");
 
-describe("/auth-check", () => {
+describe("GET /auth-check", () => {
   describe("when no auth token is present", () => {
     it("should return 401", async () => {
       // given

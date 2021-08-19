@@ -5,7 +5,7 @@ const request = supertest(app);
 const nock = require("nock");
 const jwt = require("jsonwebtoken");
 
-describe("/*", () => {
+describe("ALL /*", () => {
   // given
   const sub = "user id";
 

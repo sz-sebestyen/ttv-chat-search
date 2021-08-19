@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 const fetch = require("node-fetch");
 jest.mock("node-fetch", () => jest.fn());
 
-describe("/code", () => {
+describe("POST /code", () => {
   describe("when jwt (with sub included in the payload) is in the response", () => {
     it("should return 200", async () => {
       // given
