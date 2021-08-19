@@ -18,7 +18,7 @@ const downloadChat = async (req, res, next) => {
   if (chatDownloaderResponse.status === SUCCESS) {
     res.json({ message: "Vod request registered" });
   } else {
-    res.stauts(NOT_FOUND).json({ message: "Vod not found" });
+    res.status(NOT_FOUND).json({ message: "Vod not found" });
   }
 };
 
