@@ -14,6 +14,20 @@ const request = supertest(app);
 
 jest.mock("node-fetch", () => jest.fn());
 
+let mongoServer;
+
+beforeAll(async () => {
+  mongoServer = await dbConnect();
+});
+
+afterAll(async () => {
+  await dbDisconnect(mongoServer);
+});
+
+afterEach(async () => {
+  await dbClearCollections([ChatMessage]);
+});
+
 describe("POST /vod/:id/chat-search?term=<search-term>", () => {
   describe("when term is missing", () => {
     it("should return 400", async () => {
@@ -28,16 +42,6 @@ describe("POST /vod/:id/chat-search?term=<search-term>", () => {
   });
 
   describe("when the search term is given", () => {
-    let mongoServer;
-
-    beforeEach(async () => {
-      mongoServer = await dbConnect();
-    });
-
-    afterEach(async () => {
-      await dbDisconnect(mongoServer);
-    });
-
     it("should return the messages found", async () => {
       // given
       const vodId = "123";
