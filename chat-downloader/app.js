@@ -3,7 +3,7 @@ require("express-async-errors");
 const app = express();
 
 // controllers
-const vodInfoResponse = require("./controllers/vodInfoResponse");
+const { vodInfoResponse } = require("./controllers");
 
 // middlewares
 const { downloadChat, getVodInfo, errorHandler } = require("./middlewares");

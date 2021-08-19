@@ -1,5 +1,5 @@
 const twitchApi = require("../../TwitchApi");
-const ChatMessage = require("../../models/ChatMessage");
+const { ChatMessage } = require("../../models");
 
 const isNotLastPage = (page, endSeconds) => {
   const lastComment = page.comments[page.comments.length - 1];

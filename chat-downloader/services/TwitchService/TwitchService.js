@@ -1,7 +1,6 @@
 const getVodInfo = require("./getVodInfo");
 const Chat = require("./Chat");
-const ChatMessage = require("../../models/ChatMessage");
-const VodInfo = require("../../models/VodInfo");
+const { ChatMessage, VodInfo } = require("../../models");
 
 const downloadChat = async (vodInfo) => {
   const hasDownloadStartedElsewhere = await ChatMessage.findOne({

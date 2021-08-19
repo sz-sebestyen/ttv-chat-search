@@ -1,5 +1,4 @@
-const ChatMessage = require("../../models/ChatMessage");
-const VodInfo = require("../../models/VodInfo");
+const { VodInfo } = require("../../models");
 const getSecondsFromDuration = require("./getSecondsFromDuration");
 const ChatPiece = require("./ChatPiece");
 

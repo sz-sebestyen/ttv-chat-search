@@ -1,0 +1,1 @@
+exports.vodInfoResponse = require("./vodInfoResponse");
