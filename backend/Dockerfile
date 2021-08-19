@@ -2,7 +2,7 @@ FROM node:14-alpine
 ARG WORKDIR
 WORKDIR $WORKDIR
 COPY package*.json ./
-RUN npm ci
+RUN ["npm", "ci", "--production"]
 COPY . ./
 
 EXPOSE 8080
