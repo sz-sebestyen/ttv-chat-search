@@ -13,19 +13,21 @@ describe("/*", () => {
 
   const path = "/custom-path";
 
-  nock(process.env.BACKEND_HOST, {
-    reqheaders: {
-      "x-user_id": (headerValue) => headerValue === sub,
-    },
-  })
-    .get(path)
-    .reply(200, "x-user_id included");
+  beforeEach(() => {
+    nock(process.env.BACKEND_HOST, {
+      reqheaders: {
+        "x-user_id": (headerValue) => headerValue === sub,
+      },
+    })
+      .get(path)
+      .reply(200, "x-user_id included");
 
-  nock(process.env.BACKEND_HOST, {
-    badheaders: ["x-user_id"],
-  })
-    .get(path)
-    .reply(200, "no x-user_id header");
+    nock(process.env.BACKEND_HOST, {
+      badheaders: ["x-user_id"],
+    })
+      .get(path)
+      .reply(200, "no x-user_id header");
+  });
 
   describe("when no authorized Bearer token is in the header", () => {
     it("should proxy the request without the x-user_id in the header", async () => {
