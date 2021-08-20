@@ -3,7 +3,7 @@ const { ChatMessage } = require("../../models");
 
 const isNotLastPage = (page, endSeconds) => {
   const lastComment = page.comments[page.comments.length - 1];
-  return lastComment.content_offset_seconds < endSeconds && page._next;
+  return lastComment?.content_offset_seconds < endSeconds && page._next;
 };
 
 const rename_ids = (comments) => {
