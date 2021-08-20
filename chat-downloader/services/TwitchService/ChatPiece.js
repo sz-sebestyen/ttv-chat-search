@@ -38,11 +38,6 @@ const getFirstPage = async (vodId, startSeconds) => {
 
   firstPage.comments = getCommentsAfterStart(firstPage.comments, startSeconds);
 
-  if (!firstPage.comments.length) {
-    // TODO: return a rejected promise instead
-    throw Error("Chat not available");
-  }
-
   return firstPage;
 };
 
