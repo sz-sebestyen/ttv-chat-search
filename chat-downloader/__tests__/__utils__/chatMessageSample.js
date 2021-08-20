@@ -1,5 +1,5 @@
 module.exports = {
-  original_id: "4ef8122b-53bc-4e26-b821-a98fe584f025",
+  _id: "4ef8122b-53bc-4e26-b821-a98fe584f025",
   created_at: "2021-07-06T19:02:56.776Z",
   updated_at: "2021-07-06T19:02:56.776Z",
   channel_id: "26301881",
@@ -8,7 +8,7 @@ module.exports = {
   content_offset_seconds: 998.076,
   commenter: {
     display_name: "Jon_Weekends",
-    original_id: "156798574",
+    _id: "156798574",
     name: "jon_weekends",
     type: "user",
     bio: null,

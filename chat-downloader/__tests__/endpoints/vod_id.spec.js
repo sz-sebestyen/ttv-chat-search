@@ -34,6 +34,7 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await dbDisconnect(mongoServer);
+  nock.cleanAll();
 });
 
 describe("GET /vod/:id", () => {
