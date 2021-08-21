@@ -14,8 +14,12 @@ const {
   getUserSearchHistory,
 } = require("./controllers");
 
+const setupSwaggerDocs = require("./setupSwaggerDocs");
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+setupSwaggerDocs(app);
 
 app.post("/vod/:id/chat", downloadChat);
 app.post("/vod/:id/chat-search", [
