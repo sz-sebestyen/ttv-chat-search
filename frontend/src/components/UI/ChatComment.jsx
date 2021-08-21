@@ -1,6 +1,6 @@
 import React from "react";
 import getVodLink from "../../getVodLink";
-import getTimeStamp from "../../getTimeStamp";
+import getTimestamp from "../../getTimestamp";
 
 function ChatComment({ comment, vodId, style }) {
   return (
@@ -16,7 +16,7 @@ function ChatComment({ comment, vodId, style }) {
         rel="noreferrer"
         className="text-gray-600 underline visited:text-gray-400 text-xs"
       >
-        {getTimeStamp(comment.content_offset_seconds)}
+        {getTimestamp(comment.content_offset_seconds)}
       </a>{" "}
       <span
         className="font-semibold"
