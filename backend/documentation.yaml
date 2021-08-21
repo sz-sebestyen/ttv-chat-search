@@ -1,0 +1,287 @@
+---
+openapi: 3.0.1
+info:
+  title: backend
+  description: Service for TTV Chat Search
+  version: "0.1"
+servers:
+- url: http://localhost:8080
+paths:
+  /vod/{vodId}:
+    get:
+      tags:
+      - vod
+      description: Returns information about the vod with the given id.
+      parameters:
+      - name: vodId
+        in: path
+        description: The id of the vod.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Info about the vod.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/VodInfo'
+              examples:
+                vodInfoExample:
+                  $ref: '#/components/examples/vodInfoExample'
+        "404":
+          description: Vod not found.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/inline_response_404'
+  /vod/{vodId}/chat:
+    post:
+      tags:
+      - vod
+      description: Start downloading the chat.
+      parameters:
+      - name: vodId
+        in: path
+        description: The id of the vod.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Vod found the download started.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+        "404":
+          description: Vod not found.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/inline_response_404'
+  /search-history:
+    get:
+      tags:
+      - search-history
+      description: Get the past searches of the user.
+      parameters:
+      - name: X-user_id
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: "120373130"
+      responses:
+        "200":
+          description: List of past searches.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Search'
+              example:
+              - _id: 611be1c446e3e5ec5e40aff2
+                vodId: "1120001501"
+                term: KEKW
+                updatedAt: 2021-08-17T16:20:20.340Z
+                created_at: 2021-08-17T16:20:20.340Z
+        "401":
+          description: Unauthorized.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/inline_response_401'
+  /vod/{vodId}/chat-search:
+    post:
+      tags:
+      - vod
+      description: Auto generated using Swagger Inspector
+      parameters:
+      - name: vodId
+        in: path
+        description: The id of the vod.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: term
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+        example: hello
+      - name: X-user_id
+        in: header
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: "120373130"
+      responses:
+        "200":
+          description: List of ChatMessages.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChatMessage'
+              example:
+              - _id: 60fe8c56e4abef0e1c2c5de6
+                created_at: 2021-06-13T19:55:08.928334147Z
+                updated_at: 2021-06-13T19:55:08.928334147Z
+                channel_id: "20567961"
+                content_type: video
+                content_id: "1055287741"
+                content_offset_seconds: 153
+                commenter:
+                  _id: 60fe8c56e4abef17ec2c5de7
+                  display_name: Embosslol
+                  original_id: "38827672"
+                message:
+                  _id: 60fe8c56e4abef66a82c5de8
+                  body: why do they sponsor you you'd play tbc anyway KEKW
+                  user_color: '#008000'
+                original_id: b8T-Bm48iBbruQ
+                __v: 0
+        "400":
+          description: Missing term in search params.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+components:
+  schemas:
+    VodInfo:
+      properties:
+        chatStatus:
+          type: string
+        downloadProgress:
+          type: string
+        _id:
+          type: string
+        id:
+          type: string
+        user_name:
+          type: string
+        title:
+          type: string
+        url:
+          type: string
+        viewable:
+          type: string
+        duration:
+          type: string
+        __v:
+          type: integer
+          format: int32
+    Search:
+      properties:
+        vodId:
+          type: string
+        term:
+          type: string
+        createdAt:
+          type: string
+    ChatMessage:
+      properties:
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        _id:
+          type: string
+        channel_id:
+          type: string
+        content_id:
+          type: string
+        content_offset_seconds:
+          type: integer
+        original_id:
+          type: string
+        commenter:
+          $ref: '#/components/schemas/Commenter'
+        message:
+          $ref: '#/components/schemas/Message'
+        __v:
+          type: integer
+          format: int32
+    Message:
+      properties:
+        _id:
+          type: string
+        body:
+          type: string
+        user_color:
+          type: string
+    Commenter:
+      properties:
+        _id:
+          type: string
+        display_name:
+          type: string
+        original_id:
+          type: string
+    inline_response_404:
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: Vod not found
+    inline_response_200:
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: Vod request registered
+    inline_response_401:
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: Missing x-user_id in header
+    inline_response_400:
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: Missing term in url search
+  examples:
+    vodInfoExample:
+      summary: A sample vodInfo object
+      value:
+        chatStatus: downloaded
+        downloadProgress: 100%
+        _id: 60fe8c55e4abefee2f2c5da0
+        id: "1055287741"
+        user_name: Ziqoftw
+        title: TBC promo
+        url: https://www.twitch.tv/videos/1055287741
+        viewable: public
+        duration: 2h7m8s
+        __v: 0
+    searchExample:
+      summary: A sample Search object
+      value:
+        _id: 611be1c446e3e5ec5e40aff2
+        vodId: "1120001501"
+        term: hello
+        updatedAt: 2021-08-17T16:20:20.340Z
+        created_at: 2021-08-17T16:20:20.340Z
+        __v: 0
