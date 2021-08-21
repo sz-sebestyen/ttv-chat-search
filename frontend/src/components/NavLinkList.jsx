@@ -32,7 +32,7 @@ function NavLinkList() {
 }
 
 function ListItem({ children }) {
-  return <li className="p-2">{children}</li>;
+  return <li className="p-2 hover:text-violet-400">{children}</li>;
 }
 
 export default NavLinkList;
