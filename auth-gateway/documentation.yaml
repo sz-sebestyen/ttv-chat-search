@@ -1,0 +1,103 @@
+---
+openapi: 3.0.1
+info:
+  title: auth-gateway
+  description: Service for TTV Chat Search
+  version: "0.1"
+servers:
+- url: http://localhost:4000
+paths:
+  /auth-check:
+    get:
+      tags:
+      - auth-check
+      description: Checks that the oauth authorization is still valid.
+      responses:
+        "200":
+          description: Currently authorized.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+        "401":
+          description: Currently unauthorized.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/inline_response_401'
+      security:
+      - oauth2: []
+  /code:
+    post:
+      tags:
+      - code
+      description: Finishes the oauth flow with the given code.
+      parameters:
+      - name: code
+        in: query
+        description: oauth code.
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Bearer token
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+        "400":
+          description: Missing code.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+        "401":
+          description: Invalid code.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/inline_response_401'
+      security:
+      - oauth2: []
+components:
+  schemas:
+    inline_response_200_1:
+      type: object
+      properties:
+        token:
+          type: string
+      example:
+        token: xxxxx.yyyyy.zzzzz
+    inline_response_200:
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: Authorized
+    inline_response_401:
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: Unauthorized
+    inline_response_400:
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: Missing code
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://id.twitch.tv/oauth2/authorize
+          tokenUrl: https://id.twitch.tv/oauth2/token
+          scopes:
+            scope_name: openid

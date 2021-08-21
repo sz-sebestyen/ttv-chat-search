@@ -10,9 +10,13 @@ const {
   authCheckController,
 } = require("./controllers");
 
+const setupSwaggerDocs = require("./setupSwaggerDocs");
+
 app.use(cors({ credentials: true, origin: process.env.FRONTEND_HOST }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+setupSwaggerDocs(app);
 
 app.use(identifyUser);
 
