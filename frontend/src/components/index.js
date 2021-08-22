@@ -6,6 +6,7 @@ import ChatDownloadStatus from "./ChatDownloadStatus";
 import UserContextProvider from "./UserContextProvider";
 import ApiContextProvider from "./ApiContextProvider";
 import AuthShield from "./AuthShield";
+import SearchResultsCanvas from "./SearchResultsCanvas";
 
 export {
   IconTheme,
@@ -16,4 +17,5 @@ export {
   UserContextProvider,
   ApiContextProvider,
   AuthShield,
+  SearchResultsCanvas,
 };

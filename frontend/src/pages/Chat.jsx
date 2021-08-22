@@ -1,20 +1,20 @@
-import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { HiOutlineSearch, HiArrowLeft } from "react-icons/hi";
 import { ChatComment } from "../components/UI";
-import { useVodInfo, useApi } from "../hooks";
+import { SearchResultsCanvas } from "../components";
+import { useVodInfo, useApi, useVodLengh } from "../hooks";
 import getSecondsFromDuration from "../getSecondsFromDuration";
 
 function Chat() {
   const { id, term } = useParams();
   const history = useHistory();
-  const [searchResults, setSearchResults] = useState([]);
+  const api = useApi();
+  const [vodInfo] = useVodInfo(id);
+  const vodLength = useVodLengh(vodInfo);
   const canvasRef = useRef(null);
   const commentListRef = useRef(null);
-
-  const api = useApi();
-
-  const [vodInfo] = useVodInfo(id);
+  const [searchResults, setSearchResults] = useState([]);
 
   const search = async () => {
     const freshSearchResults = await api.searchInChat(id, term);
@@ -25,71 +25,55 @@ function Chat() {
     search();
   }, []); // eslint-disable-line
 
-  const [canvasWidth, setCanvasWidth] = useState(window.innerWidth);
+  const drawOnCanvas = (ctx, offsets, color) => {
+    ctx.fillStyle = color;
 
-  useLayoutEffect(() => {
-    const updateCanvasWidth = () => {
-      setCanvasWidth(window.innerWidth);
-    };
+    const { offsetWidth, offsetHeight } = canvasRef.current;
 
-    window.addEventListener("resize", updateCanvasWidth);
-
-    return () => window.removeEventListener("resize", updateCanvasWidth);
-  }, []);
-
-  const canvasHeight = 20;
-
-  const clearCanvas = () => {
-    const ctx = canvasRef.current.getContext("2d");
-    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+    offsets.forEach((offset) =>
+      ctx.fillRect(offsetWidth * offset, 0, 1, offsetHeight)
+    );
   };
 
-  const drawOnCanvas = (offsets, color) => {
-    const ctx = canvasRef.current.getContext("2d");
+  const getAllNormalizedOffests = () =>
+    searchResults.map((comment) => comment.content_offset_seconds / vodLength);
 
-    offsets.forEach((offset) => {
-      ctx.fillStyle = color;
-      ctx.fillRect(canvasWidth * offset, 0, 1, canvasHeight);
+  const getVisibleNormalizedOffests = () => {
+    const listBox = commentListRef.current.getBoundingClientRect();
+
+    const comments = Array.from(commentListRef.current.children);
+
+    const visibleComments = comments.filter((child) => {
+      const box = child.getBoundingClientRect();
+      return listBox.y < box.y && listBox.bottom > box.bottom;
     });
+
+    return visibleComments.map(
+      (comment) => parseFloat(comment.dataset.offsetseconds) / vodLength
+    );
   };
 
   const updateCanvas = () => {
-    const vodLength = getSecondsFromDuration(vodInfo.duration);
+    const ctx = canvasRef.current.getContext("2d");
 
-    clearCanvas();
-
-    // draw all
-    const normalizedOffets = searchResults.map(
-      (comment) => comment.content_offset_seconds / vodLength
+    ctx.clearRect(
+      0,
+      0,
+      canvasRef.current.offsetWidth,
+      canvasRef.current.offsetHeight
     );
 
-    drawOnCanvas(normalizedOffets, "rgba(200, 187, 0, 0.50)");
+    drawOnCanvas(ctx, getAllNormalizedOffests(), "rgba(200, 187, 0, 0.50)");
 
-    // draw visible
-    const listBox = commentListRef.current.getBoundingClientRect();
-
-    const visibleComments = Array.from(commentListRef.current.children).filter(
-      (child) => {
-        const box = child.getBoundingClientRect();
-        return listBox.y < box.y && listBox.bottom > box.bottom;
-      }
-    );
-
-    const normalizedVisibleOffsets = visibleComments.map(
-      (comment) => parseFloat(comment.dataset.offsetseconds) / vodLength
-    );
-
-    drawOnCanvas(normalizedVisibleOffsets, "#c81e00c7");
+    drawOnCanvas(ctx, getVisibleNormalizedOffests(), "#c81e00c7");
   };
 
   useEffect(() => {
-    if (vodInfo) {
-      updateCanvas();
-    }
-  }, [vodInfo, searchResults]); // eslint-disable-line
+    updateCanvas();
+  }, [searchResults]); // eslint-disable-line
 
   const scrollToComment = (event) => {
-    const box = canvasRef.current.getBoundingClientRect();
+    const box = event.target.getBoundingClientRect();
     const normalized = (event.clientX - box.x) / (box.right - box.x);
     const time = getSecondsFromDuration(vodInfo.duration) * normalized;
     const closest = searchResults.reduce((acc, cur) =>
@@ -126,14 +110,7 @@ function Chat() {
         <h2 className="text-xl py-2 flex-1">Search term: {term}</h2>
       </div>
 
-      <canvas
-        ref={canvasRef}
-        id="canvas"
-        height={canvasHeight}
-        width={canvasWidth}
-        className="w-full flex-0 border-b-4 border-b-surface cursor-pointer"
-        onClick={scrollToComment}
-      ></canvas>
+      <SearchResultsCanvas ref={canvasRef} onClick={scrollToComment} />
 
       <div
         className="overflow-y-scroll flex-grow py-2"
