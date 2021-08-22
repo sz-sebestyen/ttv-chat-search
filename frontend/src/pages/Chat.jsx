@@ -90,6 +90,11 @@ function Chat() {
 
   return (
     <div className="bg-background flex-auto flex flex-col">
+      <div className="py-1 px-4 text-center truncate">
+        <span className="font-semibold">{vodInfo.user_name}</span>
+        <span className="font-light">: {vodInfo.title}</span>
+      </div>
+
       <div className="flex bg-surface py-2">
         <button
           className="text-xs px-4 hover:text-violet-400"
@@ -107,7 +112,10 @@ function Chat() {
           <HiOutlineSearch />
         </button>
 
-        <h2 className="text-xl py-2 flex-1">Search term: {term}</h2>
+        <h2 className=" py-2 flex-1">
+          <span className="font-semibold">Search term</span>
+          <span className="font-light">: {term}</span>
+        </h2>
       </div>
 
       <SearchResultsCanvas ref={canvasRef} onClick={scrollToComment} />
