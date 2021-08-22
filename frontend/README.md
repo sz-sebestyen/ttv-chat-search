@@ -36,7 +36,7 @@ docker run -d -t -p 3000:80 --name container_name dockerhub_id/image_name
 
 ### Configuration
 
-The backend host hast to be configure through the .env file. A .env.sample is provided.
+The backend host hast to be configure through the .env file. A [.env.sample](./.env.sample) is provided.
 
 ## Running tests
 

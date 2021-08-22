@@ -36,7 +36,7 @@ docker run -d -t -p 5000:5000 --env-file ./env --name container_name dockerhub_i
 
 ### Configuration
 
-All the necessary environment variables are described in the provided .env.sample.
+All the necessary environment variables are described in the provided [.env.sample](./.env.sample).
 
 ## Running tests
 
