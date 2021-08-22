@@ -90,10 +90,12 @@ function Chat() {
 
   return (
     <div className="bg-background flex-auto flex flex-col">
-      <div className="py-1 px-4 text-center truncate">
-        <span className="font-semibold">{vodInfo.user_name}</span>
-        <span className="font-light">: {vodInfo.title}</span>
-      </div>
+      {vodInfo && (
+        <div className="py-1 px-4 text-center truncate">
+          <span className="font-semibold">{vodInfo.user_name}</span>
+          <span className="font-light">: {vodInfo.title}</span>
+        </div>
+      )}
 
       <div className="flex bg-surface py-2">
         <button
