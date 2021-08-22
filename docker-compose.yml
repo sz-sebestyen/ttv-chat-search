@@ -4,6 +4,7 @@ services:
   backend:
     build:
       context: ./backend
+      dockerfile: Dockerfile.dev
       args:
         WORKDIR: /app
     image: ${DOCKER_USERNAME}/ttv-chat-search-backend
@@ -25,6 +26,7 @@ services:
   auth-gateway:
     build:
       context: ./auth-gateway
+      dockerfile: Dockerfile.dev
       args:
         WORKDIR: /app
     image: ${DOCKER_USERNAME}/ttv-chat-search-auth-gateway
@@ -50,6 +52,7 @@ services:
   chat-downloader:
     build:
       context: ./chat-downloader
+      dockerfile: Dockerfile.dev
       args:
         WORKDIR: /app
     image: ${DOCKER_USERNAME}/ttv-chat-search-chat-downloader

@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node .",
+    "start": "nodemon",
     "test": "jest",
     "test:report": "jest --coverage --verbose"
   },
@@ -22,6 +22,7 @@
     "jest": "^27.0.6",
     "mongodb-memory-server": "^7.3.6",
     "nock": "^13.1.1",
+    "nodemon": "^2.0.12",
     "supertest": "^6.1.6"
   },
   "jest": {

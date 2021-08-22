@@ -2,12 +2,12 @@ FROM node:14-alpine
 ARG WORKDIR
 WORKDIR $WORKDIR
 
-ENV NODE_ENV=production
+ENV NODE_ENV=development
 
 COPY package*.json ./
 RUN ["npm", "ci"]
 COPY . ./
 
-EXPOSE 4000
+EXPOSE 5000
 
-CMD ["node", "index.js"]
+CMD ["npm", "run", "start"]

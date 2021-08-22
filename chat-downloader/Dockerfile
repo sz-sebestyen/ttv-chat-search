@@ -1,12 +1,13 @@
 FROM node:14-alpine
 ARG WORKDIR
 WORKDIR $WORKDIR
+
+ENV NODE_ENV=production
+
 COPY package*.json ./
-RUN ["npm", "ci", "--production"]
+RUN ["npm", "ci"]
 COPY . ./
 
 EXPOSE 5000
-
-# ENV NODE_ENV=production
 
 CMD ["node", "index.js"]

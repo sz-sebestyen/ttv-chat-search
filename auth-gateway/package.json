@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node .",
+    "start": "nodemon",
     "test": "jest",
     "test:report": "jest --coverage --verbose"
   },
@@ -25,6 +25,7 @@
     "dotenv": "^10.0.0",
     "jest": "^27.0.6",
     "nock": "^13.1.1",
+    "nodemon": "^2.0.12",
     "supertest": "^6.1.6"
   }
 }
