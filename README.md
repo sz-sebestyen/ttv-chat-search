@@ -2,6 +2,8 @@
 
 TTV Chat Search provides an easy way to search in the chat of twitch VODs (video on demand).
 
+![asd](https://media2.giphy.com/media/bBrINHBQJMvGtJVW2p/giphy.gif)
+
 ## Features
 
 What does this app do?
