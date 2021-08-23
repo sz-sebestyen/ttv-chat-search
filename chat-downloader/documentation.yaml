@@ -1,0 +1,116 @@
+openapi: 3.0.1
+info:
+  title: chat-downloader
+  description: Service for TTV Chat Search
+  version: '0.1'
+servers:
+  - url: http://localhost:5000
+paths:
+  '/vod/{vodId}':
+    get:
+      tags:
+        - vod
+      description: Returns information about the vod with the given id.
+      parameters:
+        - name: vodId
+          in: path
+          required: true
+          description: The id of the vod.
+          schema:
+            type : string
+      responses:
+        '200':
+          description: Info about the vod.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/VodInfo'
+              examples:
+                vodInfoExample:
+                  $ref: '#/components/examples/vodInfoExample'
+        '404':
+          description: Vod not found.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: 'Vod not found'
+  '/vod/{vodId}/chat':
+    post:
+      tags:
+        - vod
+      description: Start downloading the chat.
+      parameters:
+        - name: vodId
+          in: path
+          required: true
+          description: The id of the vod.
+          schema:
+            type : string
+      responses:
+        '200':
+          description: Info about the vod.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/VodInfo'
+              examples:
+                vodInfoExample:
+                  $ref: '#/components/examples/vodInfoExample'
+        '404':
+          description: Vod not found.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: 'Vod not found'
+
+      
+components:
+  schemas:
+    VodInfo:
+      properties:
+        chatStatus:
+          type: string
+        downloadProgress:
+          type: string
+        _id:
+          type: string
+        id:
+          type: string
+        user_name:
+          type: string
+        title:
+          type: string
+        url:
+          type: string
+        viewable:
+          type: string
+        duration:
+          type: string
+        __v:
+          type: integer
+          format: int32
+
+  examples:
+    vodInfoExample:
+      value:
+        chatStatus: 'downloaded'
+        downloadProgress: '100%'
+        _id: '60fe8c55e4abefee2f2c5da0'
+        id: '1055287741'
+        user_name: 'Ziqoftw'
+        title: 'TBC promo'
+        url: 'https://www.twitch.tv/videos/1055287741'
+        viewable: 'public'
+        duration: '2h7m8s'
+        __v: 0
+      summary: A sample vodInfo object

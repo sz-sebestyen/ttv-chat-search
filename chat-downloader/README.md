@@ -52,3 +52,7 @@ Run tests:
 ```shell
 npm run test
 ```
+
+## Documentation
+
+Documentation with OpenApi specification: [docs](./documentation.yaml). The documentation is served on /docs with the help of swagger-ui-express when the service is running.
