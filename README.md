@@ -28,7 +28,7 @@ When we run the above command, docker-compose will build the images and start th
 
 ### Configuration
 
-This app requires a registered application on the twitch developer console, with its own client_id and client_secret. Which we have to set as environment variables along with all the others, that are visible in the [.env.sample](./.env.sample) file at the repository's root.
+This app requires a registered application on the [twitch developer console](https://dev.twitch.tv/docs/api/), with its own client_id and client_secret. Which we have to set as environment variables along with all the others, that are visible in the [.env.sample](./.env.sample) file at the repository's root.
 
 ## Building / testing / api documentation
 
