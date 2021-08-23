@@ -37,6 +37,10 @@ afterAll(async () => {
   nock.cleanAll();
 });
 
+afterEach(async () => {
+  await dbClearCollections([VodInfo]);
+});
+
 describe("GET /vod/:id", () => {
   describe("when the VOD exists, but it is not in the database", () => {
     it("should return the vodInfo, and save it in the database", async () => {
@@ -68,6 +72,26 @@ describe("GET /vod/:id", () => {
       const vodInfo = await VodInfo.findOne({ id: vodId });
 
       expect(vodInfo).toBeTruthy();
+    });
+  });
+
+  describe("when the VOD doesn't exist", () => {
+    it("should return 404", async () => {
+      // given
+      const vodId = "123";
+
+      nock("https://api.twitch.tv")
+        .get("/helix/videos")
+        .query({ id: vodId })
+        .reply(404, { message: "Vod not found" });
+
+      // when
+      const response = await request
+        .get(`/vod/${vodId}`)
+        .set("Accept", "application/json");
+
+      // then
+      expect(response.status).toBe(404);
     });
   });
 });
