@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import { UserContext } from "../contexts";
 import { useApi } from "../hooks";
@@ -7,6 +8,7 @@ function UserContextProvider({ children }) {
   const [user, setUser] = useState();
 
   const api = useApi();
+  const location = useLocation();
 
   const signIn = async (code) => {
     const { token } = await api.signIn(code);
@@ -41,7 +43,11 @@ function UserContextProvider({ children }) {
   useEffect(() => {
     const token = localStorage.getItem("token");
 
-    token && checkAuthentication(token);
+    const shouldNotSkipAuthcheck = !/(\/login)|(\/code)/.test(
+      location.pathname
+    );
+
+    token && shouldNotSkipAuthcheck && checkAuthentication(token);
   }, []); // eslint-disable-line
 
   return (

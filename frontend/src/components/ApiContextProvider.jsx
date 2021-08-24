@@ -18,7 +18,10 @@ function ApiContextProvider({ children }) {
 
       if (res.status === 401) {
         window.location.replace(
-          `${backendHost}/login?state=${location.pathname}`
+          `${backendHost}/login?state=${location.pathname.replace(
+            /(\/login)|(\/code)/,
+            "/"
+          )}`
         );
       }
 
