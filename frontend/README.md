@@ -9,7 +9,6 @@ Frontend for TTV Chat Search. Developed with Create React App.
 Build the image:
 
 ```shell
-cd frontend/
 docker build -t dockerhub_id/image_name Dockerfile.dev
 ```
 
@@ -19,12 +18,25 @@ Start the container:
 docker run -d -t -p 3000:3000 --name container_name dockerhub_id/image_name
 ```
 
+#### Start without docker
+
+Install dependencies:
+
+```shell
+npm i
+```
+
+Start development server:
+
+```shell
+npm run start
+```
+
 ### Production
 
 Build the image:
 
 ```shell
-cd frontend/
 docker build -t dockerhub_id/image_name .
 ```
 
@@ -43,7 +55,6 @@ The backend host hast to be configure through the .env file. A [.env.sample](./.
 Install dependencies:
 
 ```shell
-cd frontend/
 npm i
 ```
 

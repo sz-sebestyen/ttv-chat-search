@@ -9,7 +9,6 @@ Service for TTV Chat Search. Authenticates the user with twitch's openid oauth f
 Build the image:
 
 ```shell
-cd auth-gateway/
 docker build -t dockerhub_id/image_name Dockerfile.dev
 ```
 
@@ -24,7 +23,6 @@ docker run -d -t -p 4000:4000 --env-file ./env --name container_name dockerhub_i
 Build the image:
 
 ```shell
-cd auth-gateway/
 docker build -t dockerhub_id/image_name .
 ```
 
@@ -43,7 +41,6 @@ All the necessary environment variables are described in the provided [.env.samp
 Install dependencies:
 
 ```shell
-cd auth-gateway/
 npm i
 ```
 

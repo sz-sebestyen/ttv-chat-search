@@ -9,7 +9,6 @@ Service for TTV Chat Search. Responsible for querying the database when answerin
 Build the image:
 
 ```shell
-cd backend/
 docker build -t dockerhub_id/image_name Dockerfile.dev
 ```
 
@@ -24,7 +23,6 @@ docker run -d -t -p 8080:8080 --env-file ./env --name container_name dockerhub_i
 Build the image:
 
 ```shell
-cd backend/
 docker build -t dockerhub_id/image_name .
 ```
 
@@ -43,7 +41,6 @@ All the necessary environment variables are described in the provided [.env.samp
 Install dependencies:
 
 ```shell
-cd backend/
 npm i
 ```
 
