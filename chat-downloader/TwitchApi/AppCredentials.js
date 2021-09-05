@@ -1,3 +1,4 @@
+const fetch = require("node-fetch");
 const SUCCESS = 200;
 
 class AppCredentials {
