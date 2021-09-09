@@ -2,7 +2,7 @@
 
 TTV Chat Search provides an easy way to search in the chat of twitch VODs (video on demand).
 
-![asd](https://media2.giphy.com/media/bBrINHBQJMvGtJVW2p/giphy.gif)
+![Search results preview](https://media2.giphy.com/media/bBrINHBQJMvGtJVW2p/giphy.gif)
 
 ## Features
 
@@ -38,3 +38,7 @@ More information about building for production, testing and documentation can be
 - [auth-gateway](/auth-gateway)
 - [backend](/backend)
 - [chat-downloader](/chat-downloader)
+
+## Architecture
+
+![architecture](/architecture.jpg)
