@@ -1,9 +1,9 @@
 const app = require("./app");
 
-const port = process.env.PORT;
+const { PORT } = process.env;
 
-const server = app.listen(port, () => {
-  console.log(`app is listening at http://localhost:${port}`);
+const server = app.listen(PORT, () => {
+  console.log(`app is listening at http://localhost:${PORT}`);
 });
 
 process.on("SIGTERM", () => {
